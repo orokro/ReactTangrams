@@ -25,7 +25,7 @@ const TestRectangle = ({ title }) => {
 		top: 50px;
 		width: 200px;
 		height: 200px;
-		
+
 		background-color: ${bgColor};
 		border-radius: 15px;
 		display: flex;
@@ -34,6 +34,14 @@ const TestRectangle = ({ title }) => {
 		justify-content: center;
 		padding: 10px;
 		box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+
+		.foo {
+			color: red;
+
+			span {
+				font-weight: bold;
+			}
+		}
 	`;
 
 	const buttonStyle = css`
@@ -54,11 +62,10 @@ const TestRectangle = ({ title }) => {
 	return (
 		<div css={rectangleStyle}>
 			<h3>{title}</h3>
-			<button 
-				css={buttonStyle}
+			<button className="foo"
 				onClick={() => setBgColor("#E6E6FA")}
 			>
-				Change Color
+				Change <span>Color</span>
 			</button>
 		</div>
 	);
