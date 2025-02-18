@@ -1,6 +1,21 @@
+/*
+	App.jsx
+	-------
+
+	Main root of the application
+*/
+
+// react
 import { useState } from 'react'
+
+// assets
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+
+// components
+import TestRectangle from './components/TestRectangle'
+
+// global css
 import './App.css'
 
 function App() {
@@ -28,6 +43,7 @@ function App() {
 			<p className="read-the-docs">
 				Click on the Vite and React logos to learn more
 			</p>
+			<TestRectangle title="Test Rectangle" />
 		</>
 	)
 }
