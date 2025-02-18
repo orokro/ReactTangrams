@@ -27,6 +27,7 @@ export const HeaderBar = ({ app }) => {
 			/* long blue bar across the top */
 			position: fixed;
 			inset: 0px 0px auto 0px;
+			z-index: 1000;
 
 			// 50 px thicc blue bar
 			height: 50px;
@@ -47,8 +48,6 @@ export const HeaderBar = ({ app }) => {
 
 				// text settings
 				font-size: 32px;
-
-				
 
 			}// h1
 
@@ -76,7 +75,7 @@ export const HeaderBar = ({ app }) => {
 	
 	return (
 		<div css={style}>
-			<div class="header-bar">
+			<div className="header-bar">
 				<h1>
 					Greg's Tangrams in 
 					<a href="https://react.dev" target="_blank">
