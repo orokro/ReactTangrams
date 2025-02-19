@@ -8,8 +8,12 @@
 
 // react imports
 /** @jsxImportSource @emotion/react */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { css } from "@emotion/react";
+
+// import preact signals
+import { signal, useSignal } from "@preact/signals-react";
+
 
 
 /**
@@ -41,17 +45,20 @@ function generateGrid(width, color){
 	return canvas.toDataURL();
 }
 
+// generate the grid bg pattern to use
+const gridSize = 20;
+const base64GridImage = generateGrid(gridSize, 'rgba(0, 0, 0, 1)');
+
+// the x/y positions of the board having been dragged
+const boardX = signal(0);
+const boardY = signal(0);
 
 // main component export
 export const TangramContainer = ({ game }) => {
 
-	// the x/y positions of the board having been dragged
-	const [boardX, setBoardX] = useState(0);
-	const [boardY, setBoardY] = useState(0);
-
-	// generate the grid bg pattern to use
-	const gridSize = 20;
-	const base64GridImage = generateGrid(gridSize, 'rgba(0, 0, 0, 1)');
+	// position that follows the mouse as a shadow (primarily for debugging)
+	const mouseShadowX = useSignal(0);
+	const mouseShadowY = useSignal(0);
 
 	// when right mouse button is down, start dragging the grid area
 	const handleDragStart = (e) => {
@@ -59,13 +66,19 @@ export const TangramContainer = ({ game }) => {
 		// GTFO if not right click
 		if (e.button !== 2) return;
 
-		const startPos = {boardX, boardY};
-		game.dragHelper.dragStart(
+		// return the position the board was at when starting the drag
+		const startPos = {
+			x: boardX.value,
+			y: boardY.value
+		};
 
+		// start dragging the board
+		game.dragHelper.dragStart(
+			
 			// on move
 			(dx, dy) => {
-				setBoardX(startPos.boardX - dx);
-				setBoardY(startPos.boardY - dy);
+				boardX.value = (startPos.x - dx);
+				boardY.value = (startPos.y - dy);
 			},
 
 			// on end
@@ -79,18 +92,18 @@ export const TangramContainer = ({ game }) => {
 	// styles
 	const style = css`
 
-		/* fill the entire screen under the header */
+		// fill the entire screen under the header
 		position: absolute;
 		inset: 52px 0px 0px 0px;
 
-		/* background color */
+		// background color
 		background-color: #EFEFEF;
-		background: url(${base64GridImage}) ${boardX}px ${boardY}px;
+		background: url(${base64GridImage}) ${boardX.value}px ${boardY.value}px;
 
-		/* make look inset with inner shadow */
+		// make look inset with inner shadow
 		box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.3);
 
-		/* the area where the pieces are spawned in */
+		// the area where the pieces are spawned in
 		.piece-container {
 
 			// even though we'll overflow, we'll start with full width/height
@@ -98,13 +111,28 @@ export const TangramContainer = ({ game }) => {
 			height: 100%;
 
 			// this container will drag along with the grid dot bg
-			position: absolute;
-			top: ${boardY}px;
-			left: ${boardX}px;			
-
-			/* background-color: rgba(255, 255, 255, 0.5); */
+			position: absolute;		
+			left: ${boardX.value}px;
+			top: ${boardY.value}px;
+			// background-color: rgba(255, 255, 255, 0.5); 
 			border: 1px solid red;
-		}
+
+			// debug shadow 
+			.debug-shadow {
+
+				// dynamically set the position
+				position: absolute;	
+				left: ${mouseShadowX.value}px;
+				top: ${mouseShadowY.value}px;
+
+				// blurry square for now
+				filter: blur(3px);
+				width: 10px;
+				height: 10px;
+				background-color: rgba(0, 0, 0, 0.5);
+			}// .debug-shadow
+
+		}// .piece-container
 	`;
 
 	return (
@@ -117,6 +145,9 @@ export const TangramContainer = ({ game }) => {
 
 				{/* the area where piece spawn */}
 				<div className="piece-container">
+
+					{/* a debug shadow for mouse position */}
+					<div className="debug-shadow"></div>
 				</div>
 				
 			</div>

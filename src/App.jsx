@@ -7,6 +7,7 @@
 
 // react
 import { useState } from 'react'
+import "@preact/signals-react";
 
 // components
 import { HeaderBar } from './components/HeaderBar'
