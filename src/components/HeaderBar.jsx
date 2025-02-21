@@ -17,7 +17,7 @@ import { css } from "@emotion/react";
 import reactLogo from '../assets/react.svg'
 
 // the main header bar component
-export const HeaderBar = ({ app }) => {
+export const HeaderBar = ({ game }) => {
 	
 	// styles
 	const style = css`

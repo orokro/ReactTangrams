@@ -50,10 +50,6 @@ function generateGrid(width, color){
 const gridSize = 20;
 const base64GridImage = generateGrid(gridSize, 'rgba(0, 0, 0, 1)');
 
-// the x/y positions of the board having been dragged
-const boardX = signal(0);
-const boardY = signal(0);
-
 // main component export
 export const TangramContainer = ({ game }) => {
 
@@ -69,8 +65,8 @@ export const TangramContainer = ({ game }) => {
 
 		// return the position the board was at when starting the drag
 		const startPos = {
-			x: boardX.value,
-			y: boardY.value
+			x: game.boardX.value,
+			y: game.boardY.value
 		};
 
 		// start dragging the board
@@ -78,8 +74,8 @@ export const TangramContainer = ({ game }) => {
 			
 			// on move
 			(dx, dy) => {
-				boardX.value = (startPos.x - dx);
-				boardY.value = (startPos.y - dy);
+				game.boardX.value = (startPos.x - dx);
+				game.boardY.value = (startPos.y - dy);
 			},
 
 			// on end
@@ -99,7 +95,7 @@ export const TangramContainer = ({ game }) => {
 
 		// background color
 		background-color: #EFEFEF;
-		background: url(${base64GridImage}) ${boardX.value}px ${boardY.value}px;
+		background: url(${base64GridImage}) ${game.boardX.value}px ${game.boardY.value}px;
 
 		// make look inset with inner shadow
 		box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.3);
@@ -113,10 +109,10 @@ export const TangramContainer = ({ game }) => {
 
 			// this container will drag along with the grid dot bg
 			position: absolute;		
-			left: ${boardX.value}px;
-			top: ${boardY.value}px;
+			left: ${game.boardX.value}px;
+			top: ${game.boardY.value}px;
 			// background-color: rgba(255, 255, 255, 0.5); 
-			border: 1px solid red;
+			/* border: 1px solid red; */
 
 			// debug shadow 
 			.debug-shadow {
@@ -148,7 +144,7 @@ export const TangramContainer = ({ game }) => {
 				<div className="piece-container">
 
 					{/* a debug shadow for mouse position */}
-					<div className="debug-shadow"></div>
+					{ (game.pieMenuOpen.value) && <div className="debug-shadow"></div>}
 
 					{/* the SVG tray */}
 					{/* <SVGTestTray /> */}

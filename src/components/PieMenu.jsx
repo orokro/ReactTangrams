@@ -9,23 +9,16 @@
 // react imports
 /** @jsxImportSource @emotion/react */
 import React from "react";
-import { useEffect, useState } from "react";
 import { css } from "@emotion/react";
 
-// libs
-import { signal, useSignal } from "@preact/signals-react";
-
 // PieMenu component
-export const PieMenu = ({x, y, menuSize, onItemSelect, children}) => {
+export const PieMenu = ({x, y, menuSize, onItemSelect, children, ...props}) => {
 
 	// default menu size
 	menuSize = menuSize || 400;
 
 	// styles
 	const style = css`
-
-		// disable mouse events for the menu itself
-		pointer-events: none;
 
 		// fixed positioning
 		position: absolute;
@@ -72,7 +65,7 @@ export const PieMenu = ({x, y, menuSize, onItemSelect, children}) => {
 			onClick: (event) => {
 				if (child.props.onClick)
 					child.props.onClick(event);				
-				onItemSelect(index);
+				onItemSelect(child.props.slug, index);
 			},
 
 			className: `${child.props.className || ""} pie-child-item`,
@@ -82,7 +75,7 @@ export const PieMenu = ({x, y, menuSize, onItemSelect, children}) => {
 	});
 
 	return (
-		<div css={style} className="pie-menu">
+		<div css={style} {...props} className="pie-menu">
 			{ newChildren }
 		</div>
 	);

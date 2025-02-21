@@ -7,15 +7,10 @@
 
 // react imports
 /** @jsxImportSource @emotion/react */
-import React from "react";
-import { useEffect, useState } from "react";
 import { css } from "@emotion/react";
 
-// libs
-import { signal, useSignal } from "@preact/signals-react";
-
 // PieItem component
-export const PieItem = ({title, x, y, width, children, ...props}) => {
+export const PieItem = ({title, x, y, width, children, slug, ...props}) => {
 
 	// default width
 	width = width || 100;
@@ -40,7 +35,14 @@ export const PieItem = ({title, x, y, width, children, ...props}) => {
 		// animation bigger on hover
 		transition: all 0.2s;
 		&:hover {
+
+			// scale up
 			transform: translate(-50%, -50%) translate(${x}px, ${y}px) scale(1.2);
+
+			z-index: 1000;
+			.pie-title {
+				background: white;
+			}
 		}
 
 		// the thumb should be circle in the center
@@ -63,14 +65,21 @@ export const PieItem = ({title, x, y, width, children, ...props}) => {
 
 				position: relative;
 				left: 50%;
-				top: 50%;
-
+				top: 53%;
 				width: 0px;
 				height: 0px;
-				border: 1px solid blue;
 
+				// used to force center whatever is inside
 				.centerContents {
 					transform: translate(-50%, -50%);
+					/* border: 1px solid green; */
+
+					display: inline-block;
+					width: auto;
+					height: auto;
+					max-width: max-content;
+					max-height: max-content;
+
 				}// .centerContents
 
 			}// .centerWrapper
@@ -96,7 +105,7 @@ export const PieItem = ({title, x, y, width, children, ...props}) => {
 			border-radius: 20px;
 			background-color: #fff;
 			background-color: #efefef99;
-			
+
 		}// .pie-title
 	`;
 

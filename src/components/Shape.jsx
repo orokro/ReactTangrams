@@ -1,0 +1,119 @@
+/*
+	Shape.jsx
+	---------
+
+	Generates the SVG for a shape.
+*/
+
+// react imports
+/** @jsxImportSource @emotion/react */
+import React from "react";
+import { useEffect, useState } from "react";
+import { css } from "@emotion/react";
+
+// libs
+import { signal, useSignal } from "@preact/signals-react";
+
+// const shape details
+const shapeData = {
+
+	// square
+	squareSM: {
+		name: "Small Square",
+		points: [[50, 1], [100, 50], [50, 100], [1, 50]],
+	},
+	squareMD: {
+		name: "Medium Square",
+		points: [[1, 1], [100, 1], [100, 100], [1, 100]],
+	},
+	squareLG: {
+		name: "Large Square",
+		points: [[100, 1], [200, 100], [100, 200], [1, 100]],
+	},
+	triangleSM: {
+		name: "Small Triangle",
+		points: [[1, 50], [50, 1], [100, 50]],
+	},
+	triangleMD: {
+		name: "Medium Triangle",
+		points: [[100, 1], [100, 100], [1, 100]],
+	},
+	triangleLG: {
+		name: "Large Triangle",
+		points: [[100, 1], [200, 100], [1, 100]],
+	},
+	triangleLG90: {
+		name: "Large Triangle Rotated -90",
+		points: [[100, 1], [100, 50], [1, 50]],
+	},
+	parallelogramA: {
+		name: "Parallelogram A",
+		points: [[1, 50], [50, 1], [150, 1], [100, 50]],
+	},
+	parallelogramB: {
+		name: "Parallelogram B",
+		points: [[1, 1], [100, 1], [150, 50], [50, 50]],
+	},
+	trapezoid: {
+		name: "Trapezoid",
+		points: [[1, 50], [50, 1], [100, 1], [150, 50]],
+	},
+};
+
+// Shape component
+export const Shape = ({shape, color, edgeThickness, edgeColor, rawScale, ...props}) => {
+
+	// defaults
+	rawScale = rawScale || 1;
+	color = color || '#00ABAE';
+	edgeThickness = edgeThickness || 2;
+	edgeColor = edgeColor || '#000';
+
+	// we need to build the path string for the SVG and get the bounds
+	const { name, points } = shapeData[shape];
+
+	let maxX = 0, maxY = 0;
+	const d = points.reduce((acc, p, i)=>{
+
+		// scale the points
+		const x = p[0] * rawScale;
+		const y = p[1] * rawScale;
+
+		// update the bounds
+		maxX = (x>maxX) ? x : maxX;
+		maxY = (y>maxY) ? y : maxY;
+		
+		// build the path string via the accumulator
+		return acc + `${i==0 ? 'M' : 'L'} ${x} ${y} `; 
+	}, '') + 'Z';	
+
+	// add some space for the border:
+	maxX += edgeThickness;
+	maxY += edgeThickness;
+
+	// size will be the max edge
+	const size = Math.max(maxX, maxY);
+
+	// style
+	const style = css`
+	`;
+
+	return (
+		<svg 
+			css={style}
+			width={size}
+			height={size}
+			viewBox={`0 0 ${maxX} ${maxY}`}
+			xmlns="http://www.w3.org/2000/svg"
+			title={name}
+			{...props}
+		>
+			<path 
+				fill={color} 
+				stroke={edgeColor} 
+				strokeWidth={edgeThickness}
+				d={d}
+			/>
+		</svg>
+	);
+}
