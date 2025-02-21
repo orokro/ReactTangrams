@@ -151,7 +151,7 @@ export const TangramContainer = ({ game }) => {
 					<div className="debug-shadow"></div>
 
 					{/* the SVG tray */}
-					<SVGTestTray />
+					{/* <SVGTestTray /> */}
 				</div>
 				
 			</div>
