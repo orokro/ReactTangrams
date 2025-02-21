@@ -44,7 +44,7 @@ function App() {
 	// handle when our pie menu picks an item
 	const handlePieItemSelect = (slug, idx) => {
 		console.log(`Pie item selected: ${slug} at index ${idx}`);
-		game.hidePieMenu();
+		game.addShapePieMenu.hide();
 	};
 
 	// handle key down
@@ -52,7 +52,7 @@ function App() {
 
 		// toggle the menu if spacebar is pushed
 		if (e.key === " ") {
-			game.togglePieMenu();
+			game.addShapePieMenu.toggle();
 		}
 	}
 
@@ -77,13 +77,14 @@ function App() {
 			<TangramContainer game={game} />
 
 			{/* Optionally show Pie Menu */}
-			{ game.pieMenuOpen.value && (
+			{ game.addShapePieMenu.isOpen.value && (
 				<PieMenu 
-					x={game.pieMenuX.value}
-					y={game.pieMenuY.value}
+					x={game.addShapePieMenu.x.value}
+					y={game.addShapePieMenu.y.value}
 					menuSize={400}
+					closing={game.addShapePieMenu.closing.value}
 					onItemSelect={handlePieItemSelect}
-					onMouseLeave={() => game.hidePieMenu()}
+					onMouseLeave={() => game.addShapePieMenu.hide()}
 				>
 					<PieItem title="Small Square" slug="squareSM">
 						<Shape shape="squareSM" color="red" rawScale={0.5}></Shape>

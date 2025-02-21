@@ -8,14 +8,25 @@
 
 // react imports
 /** @jsxImportSource @emotion/react */
-import React from "react";
+import React, { useEffect } from "react";
 import { css } from "@emotion/react";
 
+// libs
+import { signal, useSignal } from "@preact/signals-react";
+
 // PieMenu component
-export const PieMenu = ({x, y, menuSize, onItemSelect, children, ...props}) => {
+export const PieMenu = ({x, y, menuSize, onItemSelect, closing, children, ...props}) => {
 
 	// default menu size
 	menuSize = menuSize || 400;
+
+	// for opening animation
+	const opening = useSignal(false);
+
+	// toggle value on open
+	useEffect(() => {
+		setTimeout(() => opening.value = true, 1);
+	}, []);
 
 	// styles
 	const style = css`
@@ -25,8 +36,22 @@ export const PieMenu = ({x, y, menuSize, onItemSelect, children, ...props}) => {
 		top: ${y}px;
 		left: ${x}px;
 
-		// force center
-		transform: translate(-50%, -50%);
+		// on top of errthang
+		z-index: 1001;
+		
+		// force center with default space
+		transform: translate(-50%, -50%) scale(0);
+
+		// transition scale
+		transition: transform 0.15s;
+		&.open {
+			transform: translate(-50%, -50%) scale(1);
+		}
+
+		// disable pointer events if menu is animating closed
+		&.closing {
+			pointer-events: none;
+		}
 
 		// big circle
 		width: ${menuSize}px;
@@ -55,7 +80,7 @@ export const PieMenu = ({x, y, menuSize, onItemSelect, children, ...props}) => {
 		// compute the angle for this child
 		const childAngle = (angle * index -90) * (Math.PI / 180);
 
-		// compute the x/y position for this child
+		// compute the x/y position for this child based on it's angular position in the menu
 		const childX = Math.cos(childAngle) * (menuSize / 2);
 		const childY = Math.sin(childAngle) * (menuSize / 2);
 
@@ -75,7 +100,7 @@ export const PieMenu = ({x, y, menuSize, onItemSelect, children, ...props}) => {
 	});
 
 	return (
-		<div css={style} {...props} className="pie-menu">
+		<div css={style} {...props} className={`pie-menu ${opening.value && !closing  ? "open" : ""}`}>
 			{ newChildren }
 		</div>
 	);

@@ -7,12 +7,7 @@
 
 // react imports
 /** @jsxImportSource @emotion/react */
-import React from "react";
-import { useEffect, useState } from "react";
 import { css } from "@emotion/react";
-
-// libs
-import { signal, useSignal } from "@preact/signals-react";
 
 // const shape details
 const shapeData = {

@@ -7,11 +7,7 @@
 
 // react imports
 /** @jsxImportSource @emotion/react */
-import { useState } from "react";
 import { css } from "@emotion/react";
-
-// global css
-// import '../App.css';
 
 // assets and components
 import reactLogo from '../assets/react.svg'
@@ -86,5 +82,4 @@ export const HeaderBar = ({ game }) => {
 			</div>
 		</div>
 	);
-
 }

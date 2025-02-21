@@ -7,7 +7,6 @@
 
 // react
 /** @jsxImportSource @emotion/react */
-import { useEffect, useState } from "react";
 import { css } from "@emotion/react";
 
 // components
@@ -45,6 +44,7 @@ export const SVGTestTray = () => {
 				css={style}
 			>
 
+				{/* load all our SVGs here so we can see them preview */}
 				<img src={squareSM} />
 				<img src={squareMD} />
 				<img src={squareLG} />
@@ -53,9 +53,7 @@ export const SVGTestTray = () => {
 				<img src={triSM} />
 				<img src={parallelogramASVG} />
 				<img src={parallelogramBSVG} />
-				<img src={trapezoidSVG} />
-				{/* <img src={square45SVG} /> */}
-				
+				<img src={trapezoidSVG} />				
 			</div>
 		</>
 	);

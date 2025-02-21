@@ -111,8 +111,6 @@ export const TangramContainer = ({ game }) => {
 			position: absolute;		
 			left: ${game.boardX.value}px;
 			top: ${game.boardY.value}px;
-			// background-color: rgba(255, 255, 255, 0.5); 
-			/* border: 1px solid red; */
 
 			// debug shadow 
 			.debug-shadow {
@@ -144,7 +142,7 @@ export const TangramContainer = ({ game }) => {
 				<div className="piece-container">
 
 					{/* a debug shadow for mouse position */}
-					{ (game.pieMenuOpen.value) && <div className="debug-shadow"></div>}
+					{ (game.addShapePieMenu.isOpen.value) && <div className="debug-shadow"></div>}
 
 					{/* the SVG tray */}
 					{/* <SVGTestTray /> */}
