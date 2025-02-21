@@ -1,0 +1,15 @@
+<!-- and SVG of a square that's 80px by 80px -->
+<svg width="81" height="81" viewBox="0 0 81 81" xmlns="http://www.w3.org/2000/svg">
+	<path 
+		fill="#00ABAE" 
+		stroke="black" 
+		stroke-width="3"
+		d="
+			M0 0 
+			H81 
+			V81 
+			H0 
+			Z
+		"		
+	/>
+</svg>

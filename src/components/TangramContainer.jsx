@@ -11,10 +11,11 @@
 import { useEffect, useState } from "react";
 import { css } from "@emotion/react";
 
-// import preact signals
+// libs
 import { signal, useSignal } from "@preact/signals-react";
 
-
+// components
+import { SVGTestTray } from "./SVGTestTray";
 
 /**
  * Function to generate a base64 transparent png for the grid
@@ -148,6 +149,9 @@ export const TangramContainer = ({ game }) => {
 
 					{/* a debug shadow for mouse position */}
 					<div className="debug-shadow"></div>
+
+					{/* the SVG tray */}
+					<SVGTestTray />
 				</div>
 				
 			</div>
