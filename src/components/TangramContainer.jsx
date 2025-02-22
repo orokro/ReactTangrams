@@ -85,6 +85,14 @@ export const TangramContainer = ({ game }) => {
 		);
 	}
 
+	// handle mouse events so we can know where the mouse is locally
+	const handleMouseMove = (e) => {
+
+		const pos = game.dragHelper.getCursorPos();
+		mouseShadowX.value = pos.x - game.boardX.value;
+		mouseShadowY.value = pos.y - game.boardY.value -50;
+	}
+
 
 	// styles
 	const style = css`
@@ -99,7 +107,7 @@ export const TangramContainer = ({ game }) => {
 
 		// make look inset with inner shadow
 		box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.3);
-
+	
 		// the area where the pieces are spawned in
 		.piece-container {
 
@@ -112,6 +120,7 @@ export const TangramContainer = ({ game }) => {
 			left: ${game.boardX.value}px;
 			top: ${game.boardY.value}px;
 
+			border: 1px solid red;
 			// debug shadow 
 			.debug-shadow {
 
@@ -136,13 +145,14 @@ export const TangramContainer = ({ game }) => {
 			<div 
 				css={style}
 				onMouseDown={handleDragStart}
+				onMouseMove={handleMouseMove}
 			>
 
 				{/* the area where piece spawn */}
 				<div className="piece-container">
 
 					{/* a debug shadow for mouse position */}
-					{ (game.addShapePieMenu.isOpen.value) && <div className="debug-shadow"></div>}
+					{ <div className="debug-shadow"></div>}
 
 					{/* the SVG tray */}
 					{/* <SVGTestTray /> */}
