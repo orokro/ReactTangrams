@@ -10,48 +10,53 @@
 import { css } from "@emotion/react";
 
 // const shape details
-const shapeData = {
+export const shapeData = {
 
 	// square
 	squareSM: {
 		name: "Small Square",
 		points: [[50, 1], [100, 50], [50, 100], [1, 50]],
+		defaultColor: 'red',
 	},
 	squareMD: {
 		name: "Medium Square",
 		points: [[1, 1], [100, 1], [100, 100], [1, 100]],
+		defaultColor: 'blue',
 	},
 	squareLG: {
 		name: "Large Square",
 		points: [[100, 1], [200, 100], [100, 200], [1, 100]],
+		defaultColor: 'green',
 	},
 	triangleSM: {
 		name: "Small Triangle",
 		points: [[1, 50], [50, 1], [100, 50]],
+		defaultColor: 'orange',
 	},
 	triangleMD: {
 		name: "Medium Triangle",
 		points: [[100, 1], [100, 100], [1, 100]],
+		defaultColor: 'purple',
 	},
 	triangleLG: {
 		name: "Large Triangle",
 		points: [[100, 1], [200, 100], [1, 100]],
-	},
-	triangleLG90: {
-		name: "Large Triangle Rotated -90",
-		points: [[100, 1], [100, 50], [1, 50]],
+		defaultColor: 'yellow',
 	},
 	parallelogramA: {
 		name: "Parallelogram A",
 		points: [[1, 50], [50, 1], [150, 1], [100, 50]],
+		defaultColor: 'pink',
 	},
 	parallelogramB: {
 		name: "Parallelogram B",
 		points: [[1, 1], [100, 1], [150, 50], [50, 50]],
+		defaultColor: 'brown',
 	},
 	trapezoid: {
 		name: "Trapezoid",
 		points: [[1, 50], [50, 1], [100, 1], [150, 50]],
+		defaultColor: 'gray',
 	},
 };
 

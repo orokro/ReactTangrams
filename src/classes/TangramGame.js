@@ -14,6 +14,7 @@ import { signal, useSignal } from "@preact/signals-react";
 // app classes
 import PieMenu from "./PieMenu";
 import Piece from "./Piece";
+import { shapeData } from "../components/Shape";
 
 // main game state and logic here
 export class TangramGame {
@@ -39,6 +40,21 @@ export class TangramGame {
 
 
 	/**
+	 * Get's the current cursor position on the board
+	 * 
+	 * @returns {Object} {x, y} - the x and y position of the cursor on the board
+	 */
+	getCursorPosOnBoard() {
+
+		const pos = this.dragHelper.getCursorPos();
+		return {
+			x: pos.x - this.boardX.value,
+			y: pos.y - this.boardY.value - 50
+		};
+	}
+
+
+	/**
 	 * Adds a piece to the game board
 	 * 
 	 * @param {String} kind - the kind of piece to spawn (e.g. 'squareSM')
@@ -48,9 +64,16 @@ export class TangramGame {
 		// create a new piece of said kind
 		const piece = new Piece(this, kind);
 
+		// set the position to the cursor position
+		const cursorPos = this.getCursorPosOnBoard();
+		piece.x.value = cursorPos.x;
+		piece.y.value = cursorPos.y;
+
+		// pick initial color from shapeData
+		piece.color.value = shapeData[kind].defaultColor;
+
 		// add it to the list of pieces
 		this.pieces.value = [...this.pieces.value, piece];
-
 	}
 
 
@@ -60,7 +83,7 @@ export class TangramGame {
 	 */
 	removePiece(piece){
 
-		// check if the piece paramter is a number or an instance of Piece
+		// check if the piece parameter is a number or an instance of Piece
 		if (typeof piece === 'number' || typeof piece === 'string')
 			piece = this.pieces.value.find(p => p.id === parseInt(piece, 10));
 		

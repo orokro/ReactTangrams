@@ -16,6 +16,7 @@ import { signal, useSignal } from "@preact/signals-react";
 
 // components
 import { SVGTestTray } from "./SVGTestTray";
+import { Piece } from "./Piece";
 
 /**
  * Function to generate a base64 transparent png for the grid
@@ -121,6 +122,7 @@ export const TangramContainer = ({ game }) => {
 			top: ${game.boardY.value}px;
 
 			border: 1px solid red;
+
 			// debug shadow 
 			.debug-shadow {
 
@@ -152,10 +154,12 @@ export const TangramContainer = ({ game }) => {
 				<div className="piece-container">
 
 					{/* a debug shadow for mouse position */}
-					{ <div className="debug-shadow"></div>}
+					<div className="debug-shadow"></div>
 
-					{/* the SVG tray */}
-					{/* <SVGTestTray /> */}
+					{/* spawn active game pieces */}
+					{ 	game.pieces.value.map((piece, idx) => (
+							<Piece key={piece.id} piece={piece} game={game} />
+					))}
 				</div>
 				
 			</div>

@@ -41,8 +41,9 @@ function App() {
 
 	// handle when our pie menu picks an item
 	const handlePieItemSelect = (slug, idx) => {
-		console.log(`Pie item selected: ${slug} at index ${idx}`);
+		// console.log(`Pie item selected: ${slug} at index ${idx}`);
 		game.addShapePieMenu.hide();
+		game.spawnPiece(slug);
 	};
 
 	// handle key down
