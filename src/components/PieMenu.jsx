@@ -28,45 +28,6 @@ export const PieMenu = ({x, y, menuSize, onItemSelect, closing, children, ...pro
 		setTimeout(() => opening.value = true, 1);
 	}, []);
 
-	// styles
-	const style = css`
-
-		// fixed positioning
-		position: absolute;
-		top: ${y}px;
-		left: ${x}px;
-
-		// on top of errthang
-		z-index: 1001;
-		
-		// force center with default space
-		transform: translate(-50%, -50%) scale(0);
-
-		// transition scale
-		transition: transform 0.15s;
-		&.open {
-			transform: translate(-50%, -50%) scale(1);
-		}
-
-		// disable pointer events if menu is animating closed
-		&.closing {
-			pointer-events: none;
-		}
-
-		// big circle
-		width: ${menuSize}px;
-		height: ${menuSize}px;
-		background-color: rgba(0, 0, 0, 0.01);
-		border-radius: 50%;
-
-		// base styles for positioning the children pie items
-		.pie-child-item {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-		}// .pie-child-item
-	`;
-
 	// we will iterate over the children and add some custom props
 	// and compute their custom angle, etc.
 
@@ -100,8 +61,56 @@ export const PieMenu = ({x, y, menuSize, onItemSelect, closing, children, ...pro
 	});
 
 	return (
-		<div css={style} {...props} className={`pie-menu ${opening.value && !closing  ? "open" : ""}`}>
+		<div
+			css={style}
+			style={{
+				'--x': x + 'px',
+				'--y': y + 'px',
+				'--menu-size': menuSize + 'px',
+			}}
+			{...props}
+			className={`pie-menu ${opening.value && !closing  ? "open" : ""}`}
+		>
 			{ newChildren }
 		</div>
 	);
 }
+
+// styles
+const style = css`
+
+	// fixed positioning
+	position: absolute;
+	top: var(--y);
+	left: var(--x);
+
+	// on top of errthang
+	z-index: 1001;
+
+	// force center with default space
+	transform: translate(-50%, -50%) scale(0);
+
+	// transition scale
+	transition: transform 0.15s;
+	&.open {
+		transform: translate(-50%, -50%) scale(1);
+	}
+
+	// disable pointer events if menu is animating closed
+	&.closing {
+		pointer-events: none;
+	}
+
+	// big circle
+	width: var(--menu-size);
+	height: var(--menu-size);
+	background-color: rgba(0, 0, 0, 0.01);
+	border-radius: 50%;
+
+	// base styles for positioning the children pie items
+	.pie-child-item {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+	}// .pie-child-item
+`;

@@ -94,10 +94,6 @@ export const Shape = ({shape, color, edgeThickness, edgeColor, rawScale, ...prop
 	// size will be the max edge
 	const size = Math.max(maxX, maxY);
 
-	// style
-	const style = css`
-	`;
-
 	return (
 		<svg 
 			css={style}
@@ -117,3 +113,8 @@ export const Shape = ({shape, color, edgeThickness, edgeColor, rawScale, ...prop
 		</svg>
 	);
 }
+
+// style
+const style = css`
+
+`;

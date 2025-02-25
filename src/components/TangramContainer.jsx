@@ -8,14 +8,12 @@
 
 // react imports
 /** @jsxImportSource @emotion/react */
-import { useEffect, useState } from "react";
 import { css } from "@emotion/react";
 
 // libs
-import { signal, useSignal } from "@preact/signals-react";
+import { useSignal } from "@preact/signals-react";
 
 // components
-import { SVGTestTray } from "./SVGTestTray";
 import { Piece } from "./Piece";
 
 /**
@@ -94,58 +92,17 @@ export const TangramContainer = ({ game }) => {
 		mouseShadowY.value = pos.y - game.boardY.value -50;
 	}
 
-
-	// styles
-	const style = css`
-
-		// fill the entire screen under the header
-		position: absolute;
-		inset: 52px 0px 0px 0px;
-
-		// background color
-		background-color: #EFEFEF;
-		background: url(${base64GridImage}) ${game.boardX.value}px ${game.boardY.value}px;
-
-		// make look inset with inner shadow
-		box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.3);
-	
-		// the area where the pieces are spawned in
-		.piece-container {
-
-			// even though we'll overflow, we'll start with full width/height
-			width: 100%;
-			height: 100%;
-
-			// this container will drag along with the grid dot bg
-			position: absolute;		
-			left: ${game.boardX.value}px;
-			top: ${game.boardY.value}px;
-
-			border: 1px solid red;
-
-			// debug shadow 
-			.debug-shadow {
-
-				// dynamically set the position
-				position: absolute;	
-				left: ${mouseShadowX.value}px;
-				top: ${mouseShadowY.value}px;
-
-				// blurry square for now
-				filter: blur(3px);
-				width: 10px;
-				height: 10px;
-				background-color: rgba(0, 0, 0, 0.5);
-			}// .debug-shadow
-
-		}// .piece-container
-	`;
-
 	return (
 		<>
 			{/* the main container */}
 			<div 
 				css={style}
+				style={{
+					'--boardX': game.boardX.value + 'px',
+					'--boardY': game.boardY.value + 'px',
+					'--mouseShadowX': mouseShadowX.value + 'px',
+					'--mouseShadowY': mouseShadowY.value + 'px'
+				}}
 				onMouseDown={handleDragStart}
 				onMouseMove={handleMouseMove}
 			>
@@ -166,3 +123,49 @@ export const TangramContainer = ({ game }) => {
 		</>
 	);
 }
+
+// styles
+const style = css`
+
+	// fill the entire screen under the header
+	position: absolute;
+	inset: 52px 0px 0px 0px;
+
+	// background color
+	background-color: #EFEFEF;
+	background: url(${base64GridImage}) var(--boardX) var(--boardY);
+
+	// make look inset with inner shadow
+	box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.3);
+
+	// the area where the pieces are spawned in
+	.piece-container {
+
+		// even though we'll overflow, we'll start with full width/height
+		width: 100%;
+		height: 100%;
+
+		// this container will drag along with the grid dot bg
+		position: absolute;		
+		left: var(--boardX);
+		top: var(--boardY);
+
+		border: 1px solid red;
+
+		// debug shadow 
+		.debug-shadow {
+
+			// dynamically set the position
+			position: absolute;	
+			left: var(--mouseShadowX);
+			top: var(--mouseShadowY);
+
+			// blurry square for now
+			filter: blur(3px);
+			width: 10px;
+			height: 10px;
+			background-color: rgba(0, 0, 0, 0.5);
+		}// .debug-shadow
+
+	}// .piece-container
+`;
