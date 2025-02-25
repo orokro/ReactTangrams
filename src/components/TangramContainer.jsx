@@ -171,6 +171,7 @@ const style = css`
 			width: 10px;
 			height: 10px;
 			background-color: rgba(0, 0, 0, 0.5);
+			
 		}// .debug-shadow
 
 	}// .piece-container

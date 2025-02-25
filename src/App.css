@@ -9,6 +9,8 @@ body {
 
 	/* disable body/window level scroll bars */
 	overflow: hidden;
+
+	user-select: none;
 }
 
 #root {
