@@ -157,7 +157,8 @@ const style = css`
 		// this container will drag along with the grid dot bg
 		position: absolute;		
 
-		border: 1px solid red;
+		// for debug
+		/* border: 1px solid red; */
 
 		// debug shadow 
 		.debug-shadow {
