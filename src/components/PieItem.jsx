@@ -16,9 +16,6 @@ export const PieItem = ({ title, x, y, width, children, slug, ...props }) => {
 	// default width
 	width = width || 100;
 
-	// get a random int between 1000 and 9999
-	const randomId = Math.floor(Math.random() * 9000) + 1000;
-
 	// memoize just dynamic styles
 	const dynamicStyle = useMemo(() => css`
 

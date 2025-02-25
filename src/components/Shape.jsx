@@ -8,6 +8,7 @@
 // react imports
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
+import { useMemo } from "react";
 
 // const shape details
 export const shapeData = {
@@ -72,27 +73,36 @@ export const Shape = ({shape, color, edgeThickness, edgeColor, rawScale, ...prop
 	// we need to build the path string for the SVG and get the bounds
 	const { name, points } = shapeData[shape];
 
-	let maxX = 0, maxY = 0;
-	const d = points.reduce((acc, p, i)=>{
+	// memoize the path string and bounds
+	const { d, maxX, maxY, size} = useMemo(() => {
 
-		// scale the points
-		const x = p[0] * rawScale;
-		const y = p[1] * rawScale;
+		let maxX = 0, maxY = 0;
+		const d = points.reduce((acc, p, i)=>{
 
-		// update the bounds
-		maxX = (x>maxX) ? x : maxX;
-		maxY = (y>maxY) ? y : maxY;
+			// scale the points
+			const x = p[0] * rawScale;
+			const y = p[1] * rawScale;
+
+			// update the bounds
+			maxX = (x>maxX) ? x : maxX;
+			maxY = (y>maxY) ? y : maxY;
+			
+			// build the path string via the accumulator
+			return acc + `${i==0 ? 'M' : 'L'} ${x} ${y} `; 
+		}, '') + 'Z';	
+
+		// add some space for the border:
+		maxX += edgeThickness;
+		maxY += edgeThickness;
+
+		// size will be the max edge
+		const size = Math.max(maxX, maxY);
+
+		return { d, maxX, maxY, size };
+
+	}, [shape, rawScale]);
 		
-		// build the path string via the accumulator
-		return acc + `${i==0 ? 'M' : 'L'} ${x} ${y} `; 
-	}, '') + 'Z';	
-
-	// add some space for the border:
-	maxX += edgeThickness;
-	maxY += edgeThickness;
-
-	// size will be the max edge
-	const size = Math.max(maxX, maxY);
+	
 
 	return (
 		<svg 

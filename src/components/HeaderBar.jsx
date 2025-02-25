@@ -15,60 +15,6 @@ import reactLogo from '../assets/react.svg'
 // the main header bar component
 export const HeaderBar = ({ game }) => {
 	
-	// styles
-	const style = css`
-
-		.header-bar {
-
-			/* long blue bar across the top */
-			position: fixed;
-			inset: 0px 0px auto 0px;
-			z-index: 1000;
-
-			// 50 px thicc blue bar
-			height: 50px;
-			background: #ADD8E6;
-
-			// bottom border
-			border-bottom: 2px solid #739ba8;
-
-			/* overflow: hidden; */
-
-			h1 {
-
-				// spacing & positioning
-				margin: 0px;
-				padding-top: 0px;
-				position: relative;
-				top: -4px;
-
-				// text settings
-				font-size: 32px;
-
-			}// h1
-
-			// make the logo a little smaller and float right
-			.logo {
-
-				// stack w/ text
-				display: inline-block;
-
-				// clear built-in spacing
-				padding: 0px;
-				margin: 0px 5px 0px 10px;
-
-				// make it a little smaller
-				width: 40px;
-				height: 40px;
-
-				position: relative;
-				top: 10px;
-
-			}// .logo
-			
-		}// .header-bar
-	`;
-	
 	return (
 		<div css={style}>
 			<div className="header-bar">
@@ -83,3 +29,55 @@ export const HeaderBar = ({ game }) => {
 		</div>
 	);
 }
+
+// styles
+const style = css`
+
+	.header-bar {
+
+		/* long blue bar across the top */
+		position: fixed;
+		inset: 0px 0px auto 0px;
+		z-index: 1000;
+
+		// 50 px thicc blue bar
+		height: 50px;
+		background: #ADD8E6;
+
+		// bottom border
+		border-bottom: 2px solid #739ba8;
+
+		h1 {
+
+			// spacing & positioning
+			margin: 0px;
+			padding-top: 0px;
+			position: relative;
+			top: -4px;
+
+			// text settings
+			font-size: 32px;
+
+		}// h1
+
+		// make the logo a little smaller and float right
+		.logo {
+
+			// stack w/ text
+			display: inline-block;
+
+			// clear built-in spacing
+			padding: 0px;
+			margin: 0px 5px 0px 10px;
+
+			// make it a little smaller
+			width: 40px;
+			height: 40px;
+
+			position: relative;
+			top: 10px;
+
+		}// .logo
+
+	}// .header-bar
+`;

@@ -23,9 +23,9 @@ export const Piece = ({ piece, game, ...props }) => {
 			css={style}
 			className="piece"
 			style={{
-				"--x": `${piece.x.value}px`,
-				"--y": `${piece.y.value}px`,
-				"--rotation": `${piece.rotation.value}deg`,
+				left: `${piece.x.value}px`,
+				top: `${piece.y.value}px`,
+				transform: `translate(-50%, -50%) rotate(${piece.rotation.value}deg)`,
 			}}
 
 		>
@@ -43,9 +43,4 @@ const style = css`
 
 	// fixed position
 	position: absolute;
-	left: var(--x);
-	top: var(--y);	
-
-	// px allow overflow
-	transform: translate(-50%, -50%) rotate(var(--rotation));
 `;

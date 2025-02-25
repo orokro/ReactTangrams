@@ -98,20 +98,29 @@ export const TangramContainer = ({ game }) => {
 			<div 
 				css={style}
 				style={{
-					'--boardX': game.boardX.value + 'px',
-					'--boardY': game.boardY.value + 'px',
-					'--mouseShadowX': mouseShadowX.value + 'px',
-					'--mouseShadowY': mouseShadowY.value + 'px'
+					backgroundPosition: `${game.boardX.value}px ${game.boardY.value}px`
 				}}
 				onMouseDown={handleDragStart}
 				onMouseMove={handleMouseMove}
 			>
 
 				{/* the area where piece spawn */}
-				<div className="piece-container">
+				<div
+					className="piece-container"
+					style={{
+						left: game.boardX.value + 'px',
+						top: game.boardY.value + 'px'
+					}}
+				>
 
 					{/* a debug shadow for mouse position */}
-					<div className="debug-shadow"></div>
+					<div 
+						className="debug-shadow"
+						style={{
+							left: mouseShadowX.value + 'px',
+							top: mouseShadowY.value + 'px'
+						}}
+					></div>
 
 					{/* spawn active game pieces */}
 					{ 	game.pieces.value.map((piece, idx) => (
@@ -132,8 +141,8 @@ const style = css`
 	inset: 52px 0px 0px 0px;
 
 	// background color
-	background-color: #EFEFEF;
-	background: url(${base64GridImage}) var(--boardX) var(--boardY);
+	background-color: white;
+	background-image: url(${base64GridImage});
 
 	// make look inset with inner shadow
 	box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.3);
@@ -147,8 +156,6 @@ const style = css`
 
 		// this container will drag along with the grid dot bg
 		position: absolute;		
-		left: var(--boardX);
-		top: var(--boardY);
 
 		border: 1px solid red;
 
@@ -157,8 +164,6 @@ const style = css`
 
 			// dynamically set the position
 			position: absolute;	
-			left: var(--mouseShadowX);
-			top: var(--mouseShadowY);
 
 			// blurry square for now
 			filter: blur(3px);

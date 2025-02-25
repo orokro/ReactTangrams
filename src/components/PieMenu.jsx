@@ -12,7 +12,7 @@ import React, { useEffect } from "react";
 import { css } from "@emotion/react";
 
 // libs
-import { signal, useSignal } from "@preact/signals-react";
+import { useSignal } from "@preact/signals-react";
 
 // PieMenu component
 export const PieMenu = ({x, y, menuSize, onItemSelect, closing, children, ...props}) => {
@@ -64,9 +64,10 @@ export const PieMenu = ({x, y, menuSize, onItemSelect, closing, children, ...pro
 		<div
 			css={style}
 			style={{
-				'--x': x + 'px',
-				'--y': y + 'px',
-				'--menu-size': menuSize + 'px',
+				top: y + "px",
+				left: x + "px",
+				width: menuSize + "px",
+				height: menuSize + "px",
 			}}
 			{...props}
 			className={`pie-menu ${opening.value && !closing  ? "open" : ""}`}
@@ -79,12 +80,8 @@ export const PieMenu = ({x, y, menuSize, onItemSelect, closing, children, ...pro
 // styles
 const style = css`
 
-	// fixed positioning
+	// fixed positioning on top of errthang
 	position: absolute;
-	top: var(--y);
-	left: var(--x);
-
-	// on top of errthang
 	z-index: 1001;
 
 	// force center with default space
@@ -102,8 +99,6 @@ const style = css`
 	}
 
 	// big circle
-	width: var(--menu-size);
-	height: var(--menu-size);
 	background-color: rgba(0, 0, 0, 0.01);
 	border-radius: 50%;
 
