@@ -16,29 +16,15 @@ export const PieItem = ({ title, x, y, width, children, slug, ...props }) => {
 	// default width
 	width = width || 100;
 
-	// get a random int between 1000 and 9999
-	const randomId = Math.floor(Math.random() * 9000) + 1000;
-
-	// memoize just dynamic styles
-	const dynamicStyle = useMemo(() => css`
-
-		transform: translate(-50%, -50%) translate(${x}px, ${y}px);
-		width: ${width}px;
-		height: ${width}px;
-
-		&:hover {
-			transform: translate(-50%, -50%) translate(${x}px, ${y}px) scale(1.2);
-		}
-
-		.pie-thumb-container {
-			width: ${width}px;
-			height: ${width}px;
-		}
-	`, [x, y, width]);
-
 	return (
 		<div
-			css={[style, dynamicStyle]}
+			css={style}
+			style={{
+				'--x': `${x}px`,
+				'--y': `${y}px`,
+				'--menu-size': `${width}px`,
+			 }}
+
 			{...props}
 		>
 			<div className="pie-thumb-container">
@@ -61,6 +47,11 @@ const style = css`
 	top: 50%;
 	left: 50%;	
 
+	width: var(--menu-size);
+	height: var(--menu-size);
+
+	transform: translate(-50%, -50%) translate(var(--x), var(--y));
+
 	// pointer/cursor settings
 	pointer-events: initial;
 	cursor: pointer;
@@ -69,6 +60,7 @@ const style = css`
 	transition: all 0.2s;
 	&:hover { 
 		z-index: 1000;
+		transform: translate(-50%, -50%) translate(var(--x), var(--y)) scale(1.2);
 		.pie-title {
 			background: white;
 		}
@@ -83,6 +75,9 @@ const style = css`
 		left: 50%;
 		transform: translate(-50%, -50%);
 		
+		width: var(--menu-size);
+		height: var(--menu-size);
+
 		// transparent gray circle
 		border-radius: 50%;
 		background-color: #efefef99;

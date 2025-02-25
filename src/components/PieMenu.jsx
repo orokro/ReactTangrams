@@ -64,9 +64,9 @@ export const PieMenu = ({x, y, menuSize, onItemSelect, closing, children, ...pro
 		<div
 			css={style}
 			style={{
-				'--x': x + 'px',
-				'--y': y + 'px',
-				'--menu-size': menuSize + 'px',
+				'--x': `${x}px`,
+				'--y': `${y}px`,
+				'--menu-size': `${menuSize}px`,
 			}}
 			{...props}
 			className={`pie-menu ${opening.value && !closing  ? "open" : ""}`}
