@@ -60,7 +60,7 @@ export const TangramContainer = ({ game }) => {
 	const handleDragStart = (e) => {
 
 		// GTFO if not right click
-		if (e.button !== 2) return;
+		// if (e.button !== 2) return;
 
 		// return the position the board was at when starting the drag
 		const startPos = {

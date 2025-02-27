@@ -112,13 +112,17 @@ export const Shape = ({shape, color, edgeThickness, edgeColor, rawScale, ...prop
 			viewBox={`0 0 ${maxX} ${maxY}`}
 			xmlns="http://www.w3.org/2000/svg"
 			title={name}
-			{...props}
+			{...props}			
 		>
 			<path 
 				fill={color} 
 				stroke={edgeColor} 
 				strokeWidth={edgeThickness}
 				d={d}
+				onMouseDown={(e) => {
+					console.log('aids');
+					props.onMouseDown && props.onMouseDown(e)}
+				}
 			/>
 		</svg>
 	);
@@ -127,4 +131,13 @@ export const Shape = ({shape, color, edgeThickness, edgeColor, rawScale, ...prop
 // style
 const style = css`
 
+	// we turn off pointer events on the main, rectangle SVG,
+	// because we want only the path to interact with the mouse
+	pointer-events: none;
+	path {
+		pointer-events: initial;
+	}
+
+	// for debug
+	/* background: rgba(0, 0, 0, 0.02); */
 `;

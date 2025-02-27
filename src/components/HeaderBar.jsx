@@ -44,6 +44,10 @@ const style = css`
 		height: 50px;
 		background: #ADD8E6;
 
+		// no wrapping / escaping
+		white-space: nowrap;
+		overflow: hidden;
+
 		// bottom border
 		border-bottom: 2px solid #739ba8;
 

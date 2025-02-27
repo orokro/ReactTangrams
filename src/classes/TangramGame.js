@@ -25,7 +25,9 @@ export class TangramGame {
 	constructor() {
 
 		// make a reusable instance of the drag helper
-		this.dragHelper = new DragHelper();
+		this.dragHelper = new DragHelper({
+			usePointerEvents: true,
+		});
 
 		// the position where the board is scrolled to
 		this.boardX = signal(0);

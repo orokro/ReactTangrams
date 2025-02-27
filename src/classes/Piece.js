@@ -37,10 +37,15 @@ export default class Piece {
 		this.y = signal(0);
 		this.rotation = signal(0);
 		this.isDragging = signal(false);
+		this.isSelected	= signal(false);
 		this.color = signal('#000000');
 	}
 
 
+
+	/**
+	 * Starts dragging the piece
+	 */
 	startDrag() {
 		this.isDragging.value = true;
 		
@@ -49,6 +54,24 @@ export default class Piece {
 			x: this.x.value,
 			y: this.y.value
 		};
+
+		this.isDragging.value = true;
+
+		const snapToGrid = (n) => {
+
+			return n - (n % 20);
+		}
+
+		this.game.dragHelper.dragStart(
+			(dx, dy)=>{
+				this.x.value = snapToGrid(initialPos.x - dx);
+				this.y.value = snapToGrid(initialPos.y - dy);
+			},
+			()=>{
+				this.isDragging.value = false;
+			}
+		);
+
 
 	}
 
