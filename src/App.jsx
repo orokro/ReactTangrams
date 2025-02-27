@@ -35,8 +35,11 @@ function App() {
 	// prevent context menu unless shift is held
 	const handleCtxMenu = (e) => {
 		
-		// disable context menu unless shift is held
-		if (!e.shiftKey) e.preventDefault();
+		// disable context menu unless shift and alt are held
+		if (!e.shiftKey || !e.altKey) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
 	}
 
 	// handle when our pie menu picks an item

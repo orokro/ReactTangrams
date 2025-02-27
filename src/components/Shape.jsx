@@ -119,10 +119,10 @@ export const Shape = ({shape, color, edgeThickness, edgeColor, rawScale, ...prop
 				stroke={edgeColor} 
 				strokeWidth={edgeThickness}
 				d={d}
-				onMouseDown={(e) => {
-					console.log('aids');
-					props.onMouseDown && props.onMouseDown(e)}
-				}
+				onMouseDown={(e) => { props.onMouseDown && props.onMouseDown(e)}}
+				onTouchStart={(e) => { props.onMouseDown && props.onMouseDown(e)}}
+				onMouseUp={(e) => { props.onMouseUp && props.onMouseUp(e)}}
+				onTouchEnd={(e) => { props.onMouseUp && props.onMouseUp(e)}}
 			/>
 		</svg>
 	);

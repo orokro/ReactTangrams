@@ -12,6 +12,7 @@ import { css } from "@emotion/react";
 
 // libs
 import classNames from "classnames";
+import Util from "../classes/Util";
 
 // components
 import { Shape } from './Shape'
@@ -30,23 +31,34 @@ export const Piece = ({ piece, game, ...props }) => {
 			style={{
 				left: `${piece.x.value}px`,
 				top: `${piece.y.value}px`,
-				transform: `translate(-50%, calc(-50% - ${piece.isDragging.value ? 10 : 0}px)) rotate(${piece.rotation.value}deg)`,
 			}}
 		>
 			<Shape
+				style={{
+					transform: `translate(-50%, calc(-50% - ${piece.isDragging.value ? 10 : 0}px)) rotate(${piece.rotation.value}deg)`,
+				}}
+				className="piece-shape"
 				shape={piece.type.value}
 				color={piece.color.value}
 				rawScale={1.2}
 				onMouseDown={(e) => {
-				
+					
 					// don't bubble the event
-					e.preventDefault();
-					e.stopPropagation();
-					e.cancelBubble = true;
+					Util.stopEvent(e);
 	
 					// game.selectPiece(piece.id);
 					piece.startDrag();
 				}}
+				onMouseUp={(e) => {
+					
+					// don't bubble the event
+					Util.stopEvent(e);
+
+					// only right click
+					if (e.button !== 2) return;
+					piece.rotate(e);
+				}}
+
 			/>
 		</div>
 	)
@@ -75,6 +87,10 @@ const style = css`
 		filter: drop-shadow(2px 10px 2px rgba(0, 0, 0, 0.5));
 		z-index: 20;
 		cursor: move;		
+	}
+
+	.piece-shape {
+		transition: transform 0.1s ease-in-out;
 	}
 
 `;

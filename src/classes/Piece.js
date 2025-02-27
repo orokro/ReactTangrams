@@ -42,6 +42,19 @@ export default class Piece {
 	}
 
 
+	/**
+	 * Sets the position of the piece
+	 * 
+	 * @param {Number} x - the x position to set
+	 * @param {Number} y - the y position to set
+	 * @param {Boolean} snap - (optional) if true, snap to the grid
+	 */
+	setPos(x, y, snap=true) {
+		const snapToGrid = (n) => n - (n % 20);
+		this.x.value = snap ? snapToGrid(x) : x;
+		this.y.value = snap ? snapToGrid(y) : y;
+	}
+
 
 	/**
 	 * Starts dragging the piece
@@ -55,24 +68,35 @@ export default class Piece {
 			y: this.y.value
 		};
 
+		// for styling
 		this.isDragging.value = true;
-
-		const snapToGrid = (n) => {
-
-			return n - (n % 20);
-		}
 
 		this.game.dragHelper.dragStart(
 			(dx, dy)=>{
-				this.x.value = snapToGrid(initialPos.x - dx);
-				this.y.value = snapToGrid(initialPos.y - dy);
+				this.setPos(initialPos.x - dx, initialPos.y - dy);
 			},
 			()=>{
 				this.isDragging.value = false;
 			}
 		);
+	}
 
 
+	/**
+	 * Rotates the piece left or right depending on if shift is held with the (e) event
+	 * 
+	 * @param {Event} e - the event object
+	 */
+	rotate(e) {
+
+		// if shift is held, rotate 45 degrees
+		const rotateAmount = e.shiftKey ? -45 : 45;
+
+		// rotate the piece
+		this.rotation.value += rotateAmount;
+
+		// keep the rotation between 0 and 360
+		// this.rotation.value = this.rotation.value % 360;
 	}
 
 }
