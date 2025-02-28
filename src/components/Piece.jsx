@@ -60,7 +60,8 @@ export const Piece = ({ piece, game, ...props }) => {
 				}}
 			/>
 
-			{ piece.rotatedPoints.value.length > 0 && (
+			{/* below shows the corners for debugging snap */}
+			{ false && piece.rotatedPoints.value.length > 0 && (
 				<div className="rotated-points">
 					{ piece.rotatedPoints.value.map((point, index) => (
 						<div
@@ -75,12 +76,13 @@ export const Piece = ({ piece, game, ...props }) => {
 				</div>
 			)}
 
-			{ piece.snappedPoint.value && (
+			{/* below shows the snapped point, only visible while dragging */}
+			{ piece.snappedPoint.value && piece.isDragging.value && (
 				<div
 					className="snapped-point"
 					style={{
-						left: piece.snappedPoint.value[0] + "px",
-						top: piece.snappedPoint.value[1] + "px" 
+						left: (piece.snappedPoint.value[0] - 4) + "px",
+						top: (piece.snappedPoint.value[1] - 4) + "px" 
 					}}
 				/>
 			)}
@@ -122,17 +124,24 @@ const style = css`
 		transition: transform 0.1s ease-in-out;
 	}
 
+	// during debug we can show the mathematical points of the rotated shape
+	// that we use to determine snap
 	.rotated-points {
-
 		.point {
 			position: absolute;
 			border: 2px solid red;
 		}
-	}
+	}// .rotated-points
 
+	// shows which corner was used to determine snap
 	.snapped-point {
 		position: absolute;
-		border: 2px solid #5eff00;
-	}
+		background-color: white;
+		width: 4px;
+		height: 4px;
+		border-radius: 50%;
+		border: 2px solid black;
+		z-index: 100;
+	}// .snapped-point
 
 `;

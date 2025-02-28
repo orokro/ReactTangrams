@@ -190,12 +190,12 @@ export const shapeData = {
 	squareSM: {
 		name: "Small Square",
 		points: [[0, -50], [50, 0], [0, 50], [-50, 0]],
-		defaultColor: 'red',
+		defaultColor: '#000000',
 	},
 	squareMD: {
 		name: "Medium Square",
 		points: [[-50, -50], [50, -50], [50, 50], [-50, 50]],
-		defaultColor: 'blue',
+		defaultColor: 'blue', 
 	},
 	squareLG: {
 		name: "Large Square",
@@ -209,7 +209,7 @@ export const shapeData = {
 	},
 	triangleMD: {
 		name: "Medium Triangle",
-		points: [[-50+17, -50-17], [50+17, 50-17], [-50+17, 50-17]],
+		points: [[-50+16.5, -50-16.5], [50+16.5, 50-16.5], [-50+16.5, 50-16.5]],
 		defaultColor: 'purple',
 	},
 	triangleLG: {

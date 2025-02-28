@@ -19,7 +19,7 @@ export const Shape = ({shape, color, edgeThickness, edgeColor, rawScale, ...prop
 	// defaults
 	rawScale = rawScale || 1;
 	color = color || '#00ABAE';
-	edgeThickness = edgeThickness || 1;
+	edgeThickness = edgeThickness || 2;
 	edgeColor = edgeColor || '#000';
 
 	// we need to build the path string for the SVG and get the bounds
@@ -73,7 +73,7 @@ export const Shape = ({shape, color, edgeThickness, edgeColor, rawScale, ...prop
 				fill={color} 
 				stroke={edgeColor} 
 				strokeWidth={edgeThickness}
-				stroke-alignment="inner"
+				stroke-alignment="inner"				
 				d={d}
 				onMouseDown={(e) => { props.onMouseDown && props.onMouseDown(e)}}
 				onTouchStart={(e) => { props.onMouseDown && props.onMouseDown(e)}}
@@ -95,5 +95,5 @@ const style = css`
 	}
 
 	// for debug
-	background: rgba(0, 0, 0, 0.05);
+	/* background: rgba(0, 0, 0, 0.05); */
 `;
