@@ -6,17 +6,15 @@
 */
 
 // react
-import { signal } from "@preact/signals-react";
+import { signal, effect } from "@preact/signals-react";
 
 // our app classes
 import { TangramGame } from "./TangramGame";
 import Util from "./Util";
+import watch from "../util/preact_watch";
 
 // Piece class
 export default class Piece {
-
-	// static counter for unique ids
-	static idCounter = 0;
 
 	/**
 	 * Constructor
@@ -30,7 +28,7 @@ export default class Piece {
 		this.game = game;
 
 		// unique id
-		this.id = Piece.idCounter++;
+		this.id = crypto.randomUUID();
 
 		// our dynamic state
 		this.type = signal(type);
@@ -41,10 +39,48 @@ export default class Piece {
 		this.isSelected	= signal(false);
 		this.color = signal('#000000');
 
+		// for debug
 		this.rotatedPoints = signal([]);
 		this.snappedPoint = signal(null);
+
+		// save project when our state changes
+		watch([this.type, this.x, this.y, this.rotation, this.color],
+			() => {
+			this.game.queueSaveProject();
+		});
+	}
+	
+
+	/**
+	 * Serializes the piece state to a JSON object
+	 * 
+	 * @returns {Object} - the piece state as a JSON object
+	 */
+	serializeToJSON() {
+		return {
+			id: this.id,
+			type: this.type.value,
+			x: this.x.value,
+			y: this.y.value,
+			rotation: this.rotation.value,
+			color: this.color.value,
+		};
 	}
 
+
+	/**
+	 * populates the piece state from a JSON object
+	 * 
+	 * @param {Object} data - the piece state as a JSON object
+	 */
+	deserializeFromJSON(data) {
+		this.type.value = data.type;
+		this.x.value = data.x;
+		this.y.value = data.y;
+		this.rotation.value = data.rotation;
+		this.color.value = data.color;
+	}
+	
 
 	/**
 	 * Sets the position of the piece

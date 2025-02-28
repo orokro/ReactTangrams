@@ -135,6 +135,7 @@ export default class ProjectManager {
 	 * @param {Object} data - the project data to save
 	 */
     saveProject(project, data) {
+
         const projectId = typeof project === 'string' ? project : project.id;
         this.projects.value = this.projects.value.map(p => 
             p.id === projectId ? { ...p, data, lastEdited: Date.now() } : p

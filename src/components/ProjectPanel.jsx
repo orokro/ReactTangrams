@@ -18,7 +18,17 @@ export const ProjectPanel = ({ game }) => {
 
 	// get the project manager & our list of projects
 	const { projectManager } = game;
-	const projects = projectManager.projects.value;
+
+	// create the list of projects
+	const projectsList = useMemo(() => {
+		return projectManager.projects.value.map((project) => (
+			<ProjectItem
+				key={project.id}
+				project={project}
+				game={game}
+			/>
+		));
+	}, [projectManager.projects.value]);
 
 	return (
 		<>
@@ -46,13 +56,7 @@ export const ProjectPanel = ({ game }) => {
 
 				{/* the list of projects */}
 				<div className="project-list">
-					{projects.map((project, i) => (
-						<ProjectItem 
-							key={project.id}
-							project={project}
-							game={game}
-						/>))
-					}
+					{projectsList}
 				</div>
 			</div>
 		</>

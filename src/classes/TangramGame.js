@@ -16,6 +16,7 @@ import PieMenu from "./PieMenu";
 import Piece from "./Piece";
 import { shapeData } from "./Piece";
 import ProjectManager from "./ProjectManager";
+import { watch } from "../util/preact_watch";
 
 // main game state and logic here
 export class TangramGame {
@@ -47,8 +48,68 @@ export class TangramGame {
 		// our list of spawned pieces
 		this.pieces = signal([]);
 
+		// disable save while loading to prevent feedback loop
+		this.isLoading = false;
+
 		// make a project manager which will save and load projects
 		this.projectManager = new ProjectManager(this, this.loadProject.bind(this));
+
+		// save project when these change
+		watch([this.boardX, this.boardY, this.pieces], () => {
+			this.queueSaveProject();
+		});
+	}
+
+
+	/**
+	 * Serializes the game state to a JSON object
+	 * 
+	 * @returns {Object} - the game state as a JSON object
+	 */
+	serializeToJSON() {
+		
+		return {
+			boardX: this.boardX.value,
+			boardY: this.boardY.value,
+			pieces: this.pieces.value.map(piece => piece.serializeToJSON())
+		};
+	}
+
+
+	/**
+	 * Loads the game state from a JSON object
+	 * 
+	 * @param {Object} data - the game state as a JSON object
+	 */
+	deserializeFromJSON(data) {
+
+		// if no pieces, clear board & gtfo
+		if (!data.pieces){
+			this.pieces.value = [];
+			return;
+		}
+
+		// true till we're done loading
+		this.isLoading = true;
+
+		// load our board position
+		this.boardX.value = data.boardX ? data.boardX : 0;
+		this.boardY.value = data.boardY ? data.boardY : 0;
+
+		// clear the pieces
+		this.pieces.value = [];
+
+		// load the pieces into new array
+		setTimeout(() => {
+			this.pieces.value = data.pieces.map(pieceData => {
+				const piece = new Piece(this, pieceData.type);
+				piece.deserializeFromJSON(pieceData);
+				return piece;
+			});
+
+			// done loading
+			this.isLoading = false;
+		}, 0);
 	}
 
 
@@ -91,16 +152,13 @@ export class TangramGame {
 
 	/**
 	 * Removes a piece from the game board
-	 * @param {Piece|Number|String} piece - the piece to remove, or the id of the piece to remove
+	 * 
+	 * @param {|String} pieceID - the piece id of the piece to remove
 	 */
-	removePiece(piece){
+	removePiece(pieceID){
 
-		// check if the piece parameter is a number or an instance of Piece
-		if (typeof piece === 'number' || typeof piece === 'string')
-			piece = this.pieces.value.find(p => p.id === parseInt(piece, 10));
-		
-		// filter out the piece
-		this.pieces.value = this.pieces.value.filter(p => p !== piece);
+		// filter out the piece by id
+		this.pieces.value = this.pieces.value.filter(piece => piece.id !== pieceID);
 	}
 
 
@@ -111,7 +169,36 @@ export class TangramGame {
 	 */
 	loadProject(project) {
 
-		console.log('Loaded project:', project);
+		// load the project data into the game state
+		this.deserializeFromJSON(project.data);
 	}
 
+
+	/**
+	 * Queues a save project operation
+	 */
+	queueSaveProject() {
+
+		// if we're loading a project, GTFO to prevent feedback loop
+		if (this.isLoading)
+			return;
+
+		// if we are already saving, just increment the counter
+		this.saveQueued = this.saveQueued || 0;
+		this.saveQueued++;
+		if(this.saveQueued>1)
+			return;
+
+		// save the project after a short delay to prevent spamming
+		setTimeout(() => {
+
+			// for debug
+			// console.log(`saving project..., was queued ${this.saveQueued} times`);
+
+			// save & reset the counter
+			this.projectManager.save(this.serializeToJSON());
+			this.saveQueued = 0;
+		}, 100);
+	}
+	
 }
