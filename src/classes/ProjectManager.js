@@ -8,22 +8,13 @@
 
 // libs
 import { signal, useSignal } from "@preact/signals-react";
+import pako from "pako";
+
+// our app
 import { TangramGame } from './TangramGame';
+import Util from "./Util";
 
-// the sequel to JSON 😎
-const JSON2 = {
-    stringify: (obj) => {
-        return JSON.stringify(obj, null, 0)
-            .replace(/\"(\w+)\":/g, '$1:'); // Remove quotes around keys
-    },
-    
-    parse: (str) => {
-        return JSON.parse(
-            str.replace(/(\w+):/g, '"$1":') // Add quotes back to keys
-        );
-    }
-};
-
+const JSON2 = Util.JSON2;
 window.JSON2 = JSON2;
 
 // main class export
@@ -53,8 +44,30 @@ export default class ProjectManager {
 		// bind some methods
 		this.createNewProject = this.createNewProject.bind(this);
 
+		// check if we have a project in the URL, and load it if SO
+		this.checkURLForProject();
+
 		window.p = this;
     }
+
+	/**
+	 * Check the URL for a project to load
+	 */
+	checkURLForProject(){
+
+		// check if the URL we loaded from has the ?projectData query value.
+		// if it does, call loadShareLink with the value of the query
+		const urlParams = new URLSearchParams(window.location.search);
+		const projectData = urlParams.get('projectData');
+		if (projectData) {
+			setTimeout(()=>{
+				this.loadShareLink(projectData);
+			}, 10);
+		}
+
+		// clear the query string from the URL
+		window.history.replaceState({}, document.title, window.location.pathname);
+	}
 
 
 	/**
@@ -62,18 +75,25 @@ export default class ProjectManager {
 	 */
 	_saveProjectsToStorage() {
 
-		// sort & save a copy of the projects
-		const sorted = [...this.projects.value].sort((a, b) => b.lastEdited - a.lastEdited);
+		// wrap in promise to avoid
+		return new Promise((resolve, reject) => {
 
-		// we need to clear this or else rendering bugs
-        this.projects.value = [];
+			// sort & save a copy of the projects
+			const sorted = [...this.projects.value].sort((a, b) => b.lastEdited - a.lastEdited);
 
-		// set the projects after a timeout to avoid rendering bugs
-		setTimeout(() => this.projects.value = sorted, 0);
+			// we need to clear this or else rendering bugs
+			this.projects.value = [];
 
-		// save the projects to storage regardless of the timeout
-        localStorage.setItem('projects', JSON.stringify(sorted));
-    }
+			// set the projects after a timeout to avoid rendering bugs
+			setTimeout(() => {
+				this.projects.value = sorted
+				resolve();
+			}, 0);
+
+			// save the projects to storage regardless of the timeout
+			localStorage.setItem('projects', JSON.stringify(sorted));
+		});
+	}
 
 
 	/**
@@ -102,7 +122,7 @@ export default class ProjectManager {
 	 * 
 	 * @param {String} name - (optional) name of the project
 	 */
-    createNewProject(name = "Untitled Project") {
+    async createNewProject(name = "Untitled Project") {
 
 		// give the project a unique name
 		let untitledIndex = 1;
@@ -121,7 +141,7 @@ export default class ProjectManager {
 			fromURL: null,
         };
         this.projects.value = [...this.projects.value, newProject];
-        this._saveProjectsToStorage();
+        await this._saveProjectsToStorage();
         this.loadProject(newProject.id);
     }
 
@@ -136,6 +156,8 @@ export default class ProjectManager {
 		// get the project id & find the project
         const projectId = typeof project === 'string' ? project : project.id;
         const foundProject = this.projects.value.find(p => p.id === projectId);
+
+		console.log("found project?", foundProject);
 
 		// if found, set the selected project and call the onLoad callback
         if (foundProject) {
@@ -262,27 +284,60 @@ export default class ProjectManager {
 			...project.data
 		};
 
-		console.log(data);
-
 		// compress data
 		data = this.transformData(data);
 
 		const dataStr = JSON2.stringify(data);
-		console.log(this.compressData(dataStr));
-		return dataStr;
-		
-		
+		const dataURLData = encodeURIComponent(Util.compressToUrlSafe(dataStr));
+
+		// get the current project base URL and append the project data
+		const baseURL = window.location.href.split('?')[0];
+		const dataURL = `${baseURL}?projectData=${dataURLData}`;
+
+		return dataURL;		
 	}
 
 
-	compressData(dataString){
+	/**
+	 * Loads project from URL
+	 * 
+	 * @param {String} dataURL - the dataURL to load
+	 * @returns 
+	 */
+	async loadShareLink(dataURL) {
 
-		// convert to binary and zip / compress data string
-		const binaryString = pako.deflate(dataString, { to: 'string' });
+		// before we load, check if we've already loaded this project
+		const project = this.projects.value.find(p => p.fromURL === dataURL);
+		if (project) {
+			this.loadProject(project);
+			return;
+		}
+		
+		// decompress data after decode from URL
+		const dataStr = decodeURIComponent(Util.decompressFromUrlSafe(dataURL));
 
-		c
+		// un-transform data
+		const data = this.unTransformData(dataStr);
 
+		// create a new project
+		const newProject = {
+			id: crypto.randomUUID(),
+			name: data.projectName,
+			lastEdited: Date.now(),
+			data,
+			fromURL: dataURL
+		};
+
+		console.log(newProject);
+		// create & load the project
+		this.projects.value = [...this.projects.value, newProject];
+		await this._saveProjectsToStorage();
+		this.loadProject(newProject.id);
+
+		// select the project
+		this.selectedProject.value = newProject.id;
 	}
+
 
 	/**
 	 * Compressed project data to save space

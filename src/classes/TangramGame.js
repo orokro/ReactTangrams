@@ -83,6 +83,8 @@ export class TangramGame {
 	 */
 	deserializeFromJSON(data) {
 
+		console.log('loading in game', data);
+		
 		// if no pieces, clear board & gtfo
 		if (!data.pieces){
 			this.pieces.value = [];

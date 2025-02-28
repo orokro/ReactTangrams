@@ -16,6 +16,7 @@
     "classnames": "^2.5.1",
     "gdraghelper": "^1.0.2",
     "material-icons": "^1.13.14",
+    "pako": "^2.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
