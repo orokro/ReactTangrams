@@ -57,7 +57,20 @@ export const TangramContainer = ({ game }) => {
 	const mouseShadowY = useSignal(0);
 
 	// when right mouse button is down, start dragging the grid area
-	const handleDragStart = (e) => {
+	const handleMouseDown = (e) => {
+
+
+		// if right click, show menu instead
+		if (e.button === 2) {
+			game.addShapePieMenu.toggle();
+			return;
+		}
+
+		// start dragging the board
+		dragStart(e);
+	}
+
+	const dragStart = (e) => {
 
 		// GTFO if not right click
 		// if (e.button !== 2) return;
@@ -100,7 +113,7 @@ export const TangramContainer = ({ game }) => {
 				style={{
 					backgroundPosition: `${game.boardX.value}px ${game.boardY.value}px`
 				}}
-				onMouseDown={handleDragStart}
+				onMouseDown={handleMouseDown}
 				onMouseMove={handleMouseMove}
 			>
 
@@ -114,13 +127,13 @@ export const TangramContainer = ({ game }) => {
 				>
 
 					{/* a debug shadow for mouse position */}
-					<div 
+					{false && <div 
 						className="debug-shadow"
 						style={{
 							left: mouseShadowX.value + 'px',
 							top: mouseShadowY.value + 'px'
 						}}
-					></div>
+					></div>}
 
 					{/* spawn active game pieces */}
 					{ 	game.pieces.value.map((piece, idx) => (

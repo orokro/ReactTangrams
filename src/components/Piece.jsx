@@ -58,8 +58,32 @@ export const Piece = ({ piece, game, ...props }) => {
 					if (e.button !== 2) return;
 					piece.rotate(e);
 				}}
-
 			/>
+
+			{ piece.rotatedPoints.value.length > 0 && (
+				<div className="rotated-points">
+					{ piece.rotatedPoints.value.map((point, index) => (
+						<div
+							key={index}
+							className="point"
+							style={{
+								left: point[0] + "px",
+								top: point[1] + "px"
+							}}
+						/>
+					))}
+				</div>
+			)}
+
+			{ piece.snappedPoint.value && (
+				<div
+					className="snapped-point"
+					style={{
+						left: piece.snappedPoint.value[0] + "px",
+						top: piece.snappedPoint.value[1] + "px" 
+					}}
+				/>
+			)}
 		</div>
 	)
 }
@@ -74,6 +98,11 @@ const style = css`
 	// fixed position
 	position: absolute;
 	z-index: 10;
+
+	// small box at the X/Y pos, and let the shape itself center
+	/* border: 1px solid red; */
+	width: 0px;
+	height: 0px;
 	
 	// a drop shadow
 	filter: drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.0));	
@@ -91,6 +120,19 @@ const style = css`
 
 	.piece-shape {
 		transition: transform 0.1s ease-in-out;
+	}
+
+	.rotated-points {
+
+		.point {
+			position: absolute;
+			border: 2px solid red;
+		}
+	}
+
+	.snapped-point {
+		position: absolute;
+		border: 2px solid #5eff00;
 	}
 
 `;

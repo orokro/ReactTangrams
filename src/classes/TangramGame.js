@@ -14,7 +14,7 @@ import { signal, useSignal } from "@preact/signals-react";
 // app classes
 import PieMenu from "./PieMenu";
 import Piece from "./Piece";
-import { shapeData } from "../components/Shape";
+import { shapeData } from "./Piece";
 
 // main game state and logic here
 export class TangramGame {
