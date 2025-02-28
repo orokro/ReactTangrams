@@ -12,6 +12,7 @@ import { css } from "@emotion/react";
 
 // libs
 import { useSignal } from "@preact/signals-react";
+import classNames from "classnames";
 
 // components
 import { Piece } from "./Piece";
@@ -56,6 +57,9 @@ export const TangramContainer = ({ game }) => {
 	const mouseShadowX = useSignal(0);
 	const mouseShadowY = useSignal(0);
 
+	// true whilst we're dragging the board
+	const isDragging = useSignal(false);
+	
 	// when right mouse button is down, start dragging the grid area
 	const handleMouseDown = (e) => {
 
@@ -81,6 +85,9 @@ export const TangramContainer = ({ game }) => {
 			y: game.boardY.value
 		};
 
+		// we draggin' now, baybee
+		isDragging.value = true;
+
 		// start dragging the board
 		game.dragHelper.dragStart(
 			
@@ -92,7 +99,9 @@ export const TangramContainer = ({ game }) => {
 
 			// on end
 			(dx, dy) => {
-				// ...
+
+				// no longer dragging, disable style
+				isDragging.value = false;
 			}
 		);
 	}
@@ -110,6 +119,7 @@ export const TangramContainer = ({ game }) => {
 			{/* the main container */}
 			<div 
 				css={style}
+				className={classNames({ dragging: isDragging.value })}
 				style={{
 					backgroundPosition: `${game.boardX.value}px ${game.boardY.value}px`
 				}}
@@ -163,6 +173,12 @@ const style = css`
 
 	// make look inset with inner shadow
 	box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.3);
+
+	// appear like a pan-able surface to the user via cursor
+	cursor: grab;
+	&.dragging {
+		cursor: grabbing;
+	}
 
 	// the area where the pieces are spawned in
 	.piece-container {

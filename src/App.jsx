@@ -16,6 +16,7 @@ import "@preact/signals-react";
 import { HeaderBar } from './components/HeaderBar'
 import { TangramContainer } from './components/TangramContainer'
 import { PieMenuContainer } from "./components/PieMenuContainer"; 
+import { ProjectPanel } from "./components/ProjectPanel";
 
 // app
 import { TangramGame } from './classes/TangramGame'
@@ -52,11 +53,6 @@ function App() {
 		}
 	}
 
-	// styles
-	const style = css`
-
-	`;
-
 	return (
 		<div
 			className="App"
@@ -75,8 +71,16 @@ function App() {
 			{/* All our pie menus mount in here */}
 			<PieMenuContainer game={game} />
 
+			{/* The project panel */}
+			<ProjectPanel game={game} />
+
 		</div>
 	)
 }
+
+// styles
+const style = css`
+
+`;
 
 export default App;

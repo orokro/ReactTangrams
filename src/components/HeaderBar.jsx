@@ -11,13 +11,39 @@ import { css } from "@emotion/react";
 
 // assets and components
 import reactLogo from '../assets/react.svg'
+import classNames from "classnames";
+import { HeaderBarIcon } from "./HeaderBarIcon";
 
 // the main header bar component
 export const HeaderBar = ({ game }) => {
 	
+	const toggleProjectPanel = () => {
+		game.projectPanelIsOpen.value = !game.projectPanelIsOpen.value;
+	}
+
 	return (
 		<div css={style}>
 			<div className="header-bar">
+
+				{/* box with some icons stacked on the left of the header */}
+				<div className="header-icons">
+
+					<HeaderBarIcon title="Projects" active={game.projectPanelIsOpen.value} onClick={toggleProjectPanel}>
+						<span className="material-icons">folder</span>
+					</HeaderBarIcon>
+					<HeaderBarIcon title="Share" onClick={toggleProjectPanel}>
+						<span className="material-icons">share</span>
+					</HeaderBarIcon>
+					<HeaderBarIcon title="Help" onClick={toggleProjectPanel}>
+						<span className="material-icons">help</span>
+					</HeaderBarIcon>
+					<HeaderBarIcon title="View 3D" onClick={toggleProjectPanel}>
+						<span className="material-icons">3d_rotation</span>
+					</HeaderBarIcon>
+
+				</div>
+
+				{/* the main title area */}
 				<h1>
 					Greg's Tangrams in 
 					<a href="https://react.dev" target="_blank">
@@ -30,9 +56,11 @@ export const HeaderBar = ({ game }) => {
 	);
 }
 
+
 // styles
 const style = css`
 
+	// main header bar styles
 	.header-bar {
 
 		/* long blue bar across the top */
@@ -42,16 +70,18 @@ const style = css`
 
 		// 50 px thicc blue bar
 		height: 50px;
-		background: #ADD8E6;
+		background: #21b5c9;
 
 		// no wrapping / escaping
 		white-space: nowrap;
 		overflow: hidden;
 
 		// bottom border
-		border-bottom: 2px solid #739ba8;
+		border-bottom: 2px solid #1d7491;
 
 		h1 {
+
+			pointer-events: none;
 
 			// spacing & positioning
 			margin: 0px;
@@ -61,6 +91,9 @@ const style = css`
 
 			// text settings
 			font-size: 32px;
+
+			color: white;
+			text-shadow: 3px 2px 1px #1d7491;
 
 		}// h1
 
@@ -81,7 +114,22 @@ const style = css`
 			position: relative;
 			top: 10px;
 
+			// make a drop shadow
+			/* filter: drop-shadow(3px 2px 1px rgba(0, 0, 0, 1)); */
+
 		}// .logo
+
+		// the icons that go on the left
+		.header-icons {
+
+			// force on left
+			position: absolute;
+			inset: 0px auto auto 0px;
+
+			// padding
+			padding: 5px 0px 0px 5px;
+
+		}// .header-icons
 
 	}// .header-bar
 `;

@@ -83,7 +83,12 @@ export const ColorPieceMenu = ({game, onItemSelect, children, ...props}) => {
 		>
 			{/* items start at 12 o'clock and go right, clockwise */}
 			{colors.map((color, i) => (
-				<PieItem width={menuItemWidth} slug={color[0]} toolTipText={color[1]}>
+				<PieItem 
+					key={i}
+					width={menuItemWidth} 
+					slug={color[0]}
+					toolTipText={color[1]}
+				>
 					<span style={{color: color[0]}} className="material-icons">circle</span>
 				</PieItem>
 			))}

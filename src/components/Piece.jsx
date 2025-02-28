@@ -97,6 +97,9 @@ const style = css`
 	// (i.e. ignore the arbitrary bounding box of the piece)
 	pointer-events: none;
 
+	// reset cursor
+	cursor: default;
+	
 	// fixed position
 	position: absolute;
 	z-index: 10;
