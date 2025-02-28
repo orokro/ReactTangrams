@@ -7,12 +7,12 @@
 */
 
 // components
-import { PieMenu } from './PieMenu';
-import { PieItem } from './PieItem';
-import { Shape } from './Shape';
+import { PieMenu } from '../PieMenu';
+import { PieItem } from '../PieItem';
+import { Shape } from '../Shape';
 
 // app data
-import { shapeData } from '../classes/Piece';
+import { shapeData } from '../../classes/Piece';
 
 // PieMenu component
 export const AddPieceMenu = ({game, onItemSelect, children, ...props}) => {

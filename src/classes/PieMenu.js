@@ -73,11 +73,8 @@ export default class PieMenu {
 			if (!this.closing.value) return;
 			this.isOpen.value = false;
 
-			// run the close callback
-			if (this.onPick) {
-				this.onPick();
-				this.onPick = null;
-			}
+			// clear callback
+			this.onPick = null;
 			
 		}, 150);
 	}

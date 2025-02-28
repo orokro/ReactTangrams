@@ -58,7 +58,7 @@ export const PieMenu = ({cssStyles, pieMenu, menuSize, onItemSelect, children, .
 					child.props.onClick(event);				
 				onItemSelect(child.props.slug, index);
 				if(pieMenu.onPick) 
-					pieMenu.onPick(child.props.slug, index);
+					pieMenu.onPick(event, child.props.slug, index);
 			},
 
 			className: `${child.props.className || ""} pie-child-item`,
@@ -78,6 +78,10 @@ export const PieMenu = ({cssStyles, pieMenu, menuSize, onItemSelect, children, .
 			}}
 			{...props}
 			className={`pie-menu ${opening.value && !closing  ? "open" : ""}`}
+			onClick={(e) => {
+				e.stopPropagation();
+				pieMenu.hide();
+			}}
 		>
 			{ newChildren }
 		</div>
@@ -106,7 +110,7 @@ const style = css`
 	}
 
 	// big circle
-	background-color: rgba(0, 0, 0, 0.01);
+	/* background-color: rgba(0, 0, 0, 0.1); */
 	border-radius: 50%;
 
 	// base styles for positioning the children pie items

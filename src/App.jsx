@@ -15,8 +15,7 @@ import "@preact/signals-react";
 // components
 import { HeaderBar } from './components/HeaderBar'
 import { TangramContainer } from './components/TangramContainer'
-import { AddPieceMenu } from './components/AddPieceMenu'
-import { EditPieceMenu } from "./components/EditPieceMenu";
+import { PieMenuContainer } from "./components/PieMenuContainer"; 
 
 // app
 import { TangramGame } from './classes/TangramGame'
@@ -43,13 +42,6 @@ function App() {
 			e.stopPropagation();
 		}
 	}
-
-	// handle when our pie menu picks an item
-	const handlePieItemSelect = (slug, idx) => {
-		// console.log(`Pie item selected: ${slug} at index ${idx}`);
-		game.addShapePieMenu.hide();
-		game.spawnPiece(slug);
-	};
 
 	// handle key down
 	const handleKeyDown = (e) => {
@@ -80,29 +72,9 @@ function App() {
 			{/* Tangram Container which is the main work area, where pieces will spawn and move */}
 			<TangramContainer game={game} />
 
-			{/* Optionally show Pie Menu */}
-			{ game.addShapePieMenu.isOpen.value && (
-				<AddPieceMenu
-					game={game}
-					pieMenu={game.addShapePieMenu}
-					onItemSelect={handlePieItemSelect}
-					onMouseLeave={() => game.addShapePieMenu.hide()}
-				/>	
-			)}
+			{/* All our pie menus mount in here */}
+			<PieMenuContainer game={game} />
 
-			{/* Optionally show Edit Pie Menu */}
-			{ game.editShapePieMenu.isOpen.value && (
-				<EditPieceMenu
-					game={game}
-					pieMenu={game.editShapePieMenu}
-					onItemSelect={(slug) => {
-						// game.editShapePieMenu.hide();
-						// game.deletePiece(slug);
-					}}
-					onMouseLeave={() => game.editShapePieMenu.hide()}
-				/>
-			)}
-		
 		</div>
 	)
 }

@@ -10,6 +10,7 @@ import { signal } from "@preact/signals-react";
 
 // our app classes
 import { TangramGame } from "./TangramGame";
+import Util from "./Util";
 
 // Piece class
 export default class Piece {
@@ -176,6 +177,64 @@ export default class Piece {
 
 		// keep the rotation between 0 and 360
 		// this.rotation.value = this.rotation.value % 360;
+	}
+
+
+	/**
+	 * Handles the edit menu items
+	 * 
+	 * @param {Event} event - the event that triggered the menu
+	 * @param {String} pickedItem - the item that was picked (slug)
+	 * @param {Number} index - the index of the item that was picked in the menu
+	 */
+	handleEditMenu(event, pickedItem, index) {
+
+		Util.stopEvent(event);
+
+		switch (pickedItem) {
+			case "rotate":
+				this.game.rotateShapePieMenu.show(this.handleRotateMenu.bind(this));
+				this.game.editShapePieMenu.hide();
+				break;
+			case "pickColor":
+				this.game.pickColorPieMenu.toggle(piece);
+				break;
+			case "delete":
+				this.game.removePiece(this.id);
+				this.game.editShapePieMenu.hide();
+				break;
+		}
+	};
+
+
+	/**
+	 * Handles the rotate menu
+	 * 
+	 * @param {Event} event - the event that triggered the menu
+	 * @param {String} pickedItem - the item that was picked (slug)
+	 * @param {Number} index - the index of the item that was picked in the menu
+	 */
+	handleRotateMenu(event, pickedItem, index) {
+
+		Util.stopEvent(event);
+
+		switch (pickedItem) {
+			case "rotate180":
+				this.rotate(180);
+				break;
+			case "rotate45":
+				this.rotate(45);
+				break;
+			case "rotate90":
+				this.rotate(90);
+				break;
+			case "rotate-90":
+				this.rotate(-90);
+				break;
+			case "rotate-45":
+				this.rotate(-45);
+				break;
+		}// swatch
 	}
 
 }
