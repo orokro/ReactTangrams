@@ -47,8 +47,9 @@ function App() {
 	// handle key down
 	const handleKeyDown = (e) => {
 
-		// toggle the menu if spacebar is pushed
-		if (e.key === " ") {
+		// toggle the menu if spacebar is pushed, and the event isnt focused in an input
+		if (e.key === ' ' && e.target.tagName !== 'INPUT') {
+			e.preventDefault();
 			game.addShapePieMenu.toggle();
 		}
 	}

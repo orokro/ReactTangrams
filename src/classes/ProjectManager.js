@@ -40,12 +40,23 @@ export default class ProjectManager {
 		window.p = this;
     }
 
+
 	/**
 	 * Save the projects to localStorage
 	 */
 	_saveProjectsToStorage() {
-        this.projects.value.sort((a, b) => b.lastEdited - a.lastEdited);
-        localStorage.setItem('projects', JSON.stringify(this.projects.value));
+
+		// sort & save a copy of the projects
+		const sorted = [...this.projects.value].sort((a, b) => b.lastEdited - a.lastEdited);
+
+		// we need to clear this or else rendering bugs
+        this.projects.value = [];
+
+		// set the projects after a timeout to avoid rendering bugs
+		setTimeout(() => this.projects.value = sorted, 0);
+
+		// save the projects to storage regardless of the timeout
+        localStorage.setItem('projects', JSON.stringify(sorted));
     }
 
 

@@ -11,22 +11,14 @@
 import { css } from "@emotion/react";
 import { useMemo } from "react";
 import classNames from "classnames";
+import { useSignal } from "@preact/signals-react";
 
 // main component
 export const ProjectPanel = ({ game }) => {
 
 	// get the project manager & our list of projects
 	const { projectManager } = game;
-	const projects = projectManager.projects;
-
-	// memoize the project list
-	const projectList = useMemo(() => projects.value.map((project, i) => (
-		<ProjectItem 
-			key={project.id}
-			project={project}
-			game={game}
-		/>
-	)), [projects.value]);
+	const projects = projectManager.projects.value;
 
 	return (
 		<>
@@ -54,7 +46,13 @@ export const ProjectPanel = ({ game }) => {
 
 				{/* the list of projects */}
 				<div className="project-list">
-					{projectList}
+					{projects.map((project, i) => (
+						<ProjectItem 
+							key={project.id}
+							project={project}
+							game={game}
+						/>))
+					}
 				</div>
 			</div>
 		</>
@@ -67,10 +65,54 @@ const ProjectItem = ({ project, game }) => {
 	// get the project manager
 	const { projectManager } = game;
 
+	// vars for editing the project name
+	const isEditing = useSignal(false);
+	const nameIsValid = useSignal(true);
+	const tempName = useSignal(project.name);
+
 	// click handler
 	const handleClick = () => {
 		projectManager.loadProject(project.id);
 	}
+
+	// name click handler - enter edit mode if we're selected
+	const handleNameClick = () => {
+		if (project.id === projectManager.selectedProject.value) {
+			tempName.value = project.name;
+			isEditing.value = true;			
+		}
+	}
+
+	// validate the name
+	const validateName = (newName) => {
+        return game.projectManager.validateProjectName(newName);
+    };
+
+	// handle name change input box
+    const handleChange = (e) => {
+        const newName = e.target.value;
+        tempName.value = newName;
+        nameIsValid.value = validateName(newName);
+    };
+
+	// when the user presses return (enter) or the input loses focus, we can save the name
+    const handleBlurOrEnter = () => {
+        if (nameIsValid.value) {
+            game.projectManager.setProjectName(project.id, tempName.value);
+        }
+        isEditing.value = false;
+    };
+
+	// name when is editing
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            handleBlurOrEnter();
+        } else if (e.key === "Escape") {
+            tempName.value = project.name;
+            nameIsValid.value = true;
+            isEditing.value = false;
+        }
+    };
 
 	return (
 		<div 
@@ -81,9 +123,25 @@ const ProjectItem = ({ project, game }) => {
 			align="left"
 			onClick={handleClick}
 		>	
-			<div className="project-name" title={project.name}>
-				{project.name}
-			</div>
+			{isEditing.value ? (
+				<input 
+					type="text" 
+					value={tempName.value} 
+					onChange={handleChange}
+                    onBlur={handleBlurOrEnter}
+                    onKeyDown={handleKeyDown}
+					autoFocus
+					className={classNames(
+						"project-name-input",
+						{ invalid: !nameIsValid.value }
+					)}
+				/>
+			) : (
+				<div className="project-name" title={project.name} onClick={handleNameClick}>
+					{project.name}
+				</div>
+			)}
+
 			<div className="project-date" title={`Last edit on ${new Date(project.lastEdited).toLocaleString()}`} >
 				{new Date(project.lastEdited).toLocaleString()}
 			</div>
@@ -218,13 +276,37 @@ const style = css`
 		&.selected {
 			.project-name {
 				font-weight: bold;
+
+				cursor: text;
 			}
 		}
 
 		// the actual project name box
 		.project-name {
-
+			width: 155px;
 		}
+
+		// the text box for editing the name
+		.project-name-input {
+
+			// fixed width
+			width: 150px;
+
+			// text settings
+			font-size: 14px;
+			color: white;
+
+			// spacing
+			padding: 2px;
+			border: 1px solid #444;
+
+			// back bg style when invalid
+			background: #222;
+			&.invalid {
+				background: red;
+			}
+
+		}// .project-name-input
 
 		// the date box
 		.project-date {

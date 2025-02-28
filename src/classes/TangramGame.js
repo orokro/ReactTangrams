@@ -79,8 +79,7 @@ export class TangramGame {
 
 		// set the position to the cursor position
 		const cursorPos = this.getCursorPosOnBoard();
-		piece.x.value = cursorPos.x;
-		piece.y.value = cursorPos.y;
+		piece.setPos(cursorPos.x, cursorPos.y);
 
 		// pick initial color from shapeData
 		piece.color.value = shapeData[kind].defaultColor;

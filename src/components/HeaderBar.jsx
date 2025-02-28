@@ -21,6 +21,19 @@ export const HeaderBar = ({ game }) => {
 		game.projectPanelIsOpen.value = !game.projectPanelIsOpen.value;
 	}
 
+	const showShareModel = () => {
+		// game.sharePanelIsOpen.value = !game.sharePanelIsOpen.value;
+	}
+
+	const showHelpModal = () => {
+		// game.helpPanelIsOpen.value = !game.helpPanelIsOpen.value;
+	}
+
+	const show3dModal = () => {
+		// game.threeDPanelIsOpen.value = !game.threeDPanelIsOpen.value;
+	}
+
+
 	return (
 		<div css={style}>
 			<div className="header-bar">
@@ -31,13 +44,13 @@ export const HeaderBar = ({ game }) => {
 					<HeaderBarIcon title="Projects" active={game.projectPanelIsOpen.value} onClick={toggleProjectPanel}>
 						<span className="material-icons">folder</span>
 					</HeaderBarIcon>
-					<HeaderBarIcon title="Share" onClick={toggleProjectPanel}>
+					<HeaderBarIcon title="Share" onClick={showShareModel}>
 						<span className="material-icons">share</span>
 					</HeaderBarIcon>
-					<HeaderBarIcon title="Help" onClick={toggleProjectPanel}>
+					<HeaderBarIcon title="Help" onClick={showHelpModal}>
 						<span className="material-icons">help</span>
 					</HeaderBarIcon>
-					<HeaderBarIcon title="View 3D" onClick={toggleProjectPanel}>
+					<HeaderBarIcon title="View 3D" onClick={show3dModal}>
 						<span className="material-icons">3d_rotation</span>
 					</HeaderBarIcon>
 
