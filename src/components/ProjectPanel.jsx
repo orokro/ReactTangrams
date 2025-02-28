@@ -26,7 +26,7 @@ export const ProjectPanel = ({ game }) => {
 			project={project}
 			game={game}
 		/>
-	)), [projects]);
+	)), [projects.value]);
 
 	return (
 		<>
@@ -38,10 +38,19 @@ export const ProjectPanel = ({ game }) => {
 					{ 'open': game.projectPanelIsOpen.value }
 				)}
 			>
-				<h2>Projects</h2>
+				<h2 title="Projects">
+					Projects
+					<span className="projects-arrow material-icons">subdirectory_arrow_left</span>
+				</h2>
 
 				{/* button to add a project */}
-				<button onClick={projectManager.createNewProject}>+</button>
+				<div
+					className="cmdAddNew"
+					title="Add New Project"
+					onClick={(e)=>projectManager.createNewProject()}
+				>
+					<span className="material-icons">add</span>
+				</div>
 
 				{/* the list of projects */}
 				<div className="project-list">
@@ -69,9 +78,24 @@ const ProjectItem = ({ project, game }) => {
 				'project-item', 
 				{ 'selected': project.id === projectManager.selectedProject.value }
 			)}
+			align="left"
 			onClick={handleClick}
-		>
-			{project.name}
+		>	
+			<div className="project-name" title={project.name}>
+				{project.name}
+			</div>
+			<div className="project-date" title={`Last edit on ${new Date(project.lastEdited).toLocaleString()}`} >
+				{new Date(project.lastEdited).toLocaleString()}
+			</div>
+
+			{/* delete trash icon */}
+			<div className="cmdDelete" title="Delete Project" onClick={(e) => {
+					e.stopPropagation();
+					projectManager.deleteProject(project);
+				}}
+			>
+				<span className="material-icons">delete</span>
+			</div>
 		</div>
 	);
 }
@@ -81,7 +105,7 @@ const style = css`
 
 	// the panel is fixed on the left side
 	position: fixed;
-	top: 0;
+	top: 50px;
 	left: 0;
 	width: 200px;
 	height: 100%;
@@ -106,10 +130,65 @@ const style = css`
 	// the title
 	h2 {
 		margin: 0 0 10px 0;
+		text-align: left;
+
+		.projects-arrow {
+			position: relative;
+			top: 9px;
+			left: 5px;
+			font-size: 24px;
+			font-weight: bold;
+			transform: rotate(-90deg) scale(1.2);
+		}
 	}
+	
+	// put the add new button on the top right
+	.cmdAddNew {
+
+		// appear clickable
+		cursor: pointer;
+
+		// fixed on the top right
+		position: absolute;
+		top: 10px;
+		right: 10px;
+
+		// nice round circle
+		width: 35px;
+		height: 35px;
+		background: white;
+		border-radius: 50%;
+
+		transition: top 0.2s;
+		&:hover {
+			top: 8px;
+		}
+		&:active {
+			top: 12px; 
+		}
+
+		// icon styles
+		.material-icons {
+			position: relative;
+			top: 2px;			
+			font-size: 30px;
+			color: #22222299;
+		}
+
+	}// .cmdAddNew
 
 	// the list of projects
 	.project-list {
+
+		// fill remaining space
+		height: calc(100% - 120px);
+		overflow-y: auto;
+		overflow-x: hidden;
+
+		// border & box stiles
+		border: 1px solid #444;
+		border-radius: 5px;
+
 		list-style: none;
 		padding: 0;
 		margin: 0;
@@ -117,13 +196,73 @@ const style = css`
 
 	// each project item
 	.project-item {
+
+		// set new stacking context
+		position: relative;
+
 		padding: 10px;
 		border-bottom: 1px solid #666;
 		cursor: pointer;
 		transition: background 0.2s;
 
-		&:hover {
+		// common styles for both hover and selected
+		&:hover, &.selected {
 			background: #444;
+
+			.cmdDelete {
+				display: block;
+			}			
 		}
-	}
+
+		// just selected
+		&.selected {
+			.project-name {
+				font-weight: bold;
+			}
+		}
+
+		// the actual project name box
+		.project-name {
+
+		}
+
+		// the date box
+		.project-date {
+			font-size: 12px;
+			font-style: italic;
+			color: #aaa;
+		}
+
+		// delete button
+		.cmdDelete {
+
+			// normally hidden unless the main project item is hovered or selected
+			display: none;
+
+			// fixed on right side of item
+			position: absolute;
+			right: 6px;
+			top: 12px;
+			width: 20px;
+			height: 20px;
+
+			// appear clickable
+			cursor: pointer;
+
+			// red when hovered
+			&:hover {
+				.material-icons {
+					color: red;
+				}
+			}
+
+			.material-icons {
+				font-size: 16px;
+				color: white
+			}
+
+		}// .cmdDelete 
+
+	}// .project-item
+
 `;

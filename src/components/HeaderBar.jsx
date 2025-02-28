@@ -26,7 +26,7 @@ export const HeaderBar = ({ game }) => {
 			<div className="header-bar">
 
 				{/* box with some icons stacked on the left of the header */}
-				<div className="header-icons">
+				<div className="header-icons" align="left">
 
 					<HeaderBarIcon title="Projects" active={game.projectPanelIsOpen.value} onClick={toggleProjectPanel}>
 						<span className="material-icons">folder</span>
@@ -126,8 +126,10 @@ const style = css`
 			position: absolute;
 			inset: 0px auto auto 0px;
 
+			width: 210px;
+
 			// padding
-			padding: 5px 0px 0px 5px;
+			padding: 5px 0px 0px 6px;
 
 		}// .header-icons
 

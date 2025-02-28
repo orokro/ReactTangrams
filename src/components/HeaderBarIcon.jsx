@@ -40,7 +40,7 @@ const style = css`
 
 	// stack left w/ space on right
 	display: inline-block;
-	margin-right: 5px;
+	margin-right: 15px;
 
 	// appear clickable
 	cursor: pointer;
@@ -67,7 +67,6 @@ const style = css`
 		background: rgba(0, 0, 0, 0.2);
 		.material-icons {
 			font-size: 35px !important;
-			/* color: red; */
 		}
 	}
 
@@ -77,6 +76,7 @@ const style = css`
 		// animate position for hover and what not
 		position: relative;
 		top: 2px;
+		left: 2.5px;
 		transition: all 0.2s;
 		
 		// default icon styles

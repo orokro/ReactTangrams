@@ -20,8 +20,6 @@ export default class ProjectManager {
 	 * @param {Function} onLoad - callback when a project is loaded
 	 */
     constructor(game, onLoad) {
-
-		console.log('construcccc');
 		
 		// save ref to our game
         this.game = game;
@@ -35,6 +33,11 @@ export default class ProjectManager {
 
 		// load projects from storage
         this._loadProjectsFromStorage();
+
+		// bind some methods
+		this.createNewProject = this.createNewProject.bind(this);
+
+		window.p = this;
     }
 
 	/**
@@ -73,6 +76,16 @@ export default class ProjectManager {
 	 * @param {String} name - (optional) name of the project
 	 */
     createNewProject(name = "Untitled Project") {
+
+		// give the project a unique name
+		let untitledIndex = 1;
+		let newName = name;
+		while (this.projects.value.some(p => p.name === newName)) {
+			untitledIndex++;
+			newName = `${name} (${untitledIndex})`;
+		}
+		name = newName;
+
         const newProject = {
             id: crypto.randomUUID(),
             name,
