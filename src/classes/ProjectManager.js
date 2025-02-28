@@ -10,6 +10,22 @@
 import { signal, useSignal } from "@preact/signals-react";
 import { TangramGame } from './TangramGame';
 
+// the sequel to JSON 😎
+const JSON2 = {
+    stringify: (obj) => {
+        return JSON.stringify(obj, null, 0)
+            .replace(/\"(\w+)\":/g, '$1:'); // Remove quotes around keys
+    },
+    
+    parse: (str) => {
+        return JSON.parse(
+            str.replace(/(\w+):/g, '"$1":') // Add quotes back to keys
+        );
+    }
+};
+
+window.JSON2 = JSON2;
+
 // main class export
 export default class ProjectManager {
 
@@ -102,6 +118,7 @@ export default class ProjectManager {
             name,
             lastEdited: Date.now(),
             data: {},
+			fromURL: null,
         };
         this.projects.value = [...this.projects.value, newProject];
         this._saveProjectsToStorage();
@@ -232,5 +249,145 @@ export default class ProjectManager {
     getSelectedProject() {
         return this.projects.value.find(p => p.id === this.selectedProject.value) || null;
     }
+
+
+	// function that generates a sharable link for the project
+	generateShareLink() {
+		const project = this.getSelectedProject();
+		if (!project) return null;
+		
+		// get data for project
+		let data = {
+			projectName: project.name,
+			...project.data
+		};
+
+		console.log(data);
+
+		// compress data
+		data = this.transformData(data);
+
+		const dataStr = JSON2.stringify(data);
+		console.log(this.compressData(dataStr));
+		return dataStr;
+		
+		
+	}
+
+
+	compressData(dataString){
+
+		// convert to binary and zip / compress data string
+		const binaryString = pako.deflate(dataString, { to: 'string' });
+
+		c
+
+	}
+
+	/**
+	 * Compressed project data to save space
+	 * 
+	 * @param {Object} data - project data to transform	
+	 * @returns {Object} - transformed project data
+	 */
+	transformData(data) {
+
+		// Mapping for type conversion
+		const typeMap = {
+			squareSM: 0,
+			squareMD: 1,
+			squareLG: 2,
+			triangleSM: 3,
+			triangleMD: 4,
+			triangleLG: 5,
+			parallelogramA: 6,
+			parallelogramB: 7,
+			trapezoid: 8
+		};
+	
+		// Helper function to round to 3 decimal places
+		const round3 = (num) => Math.round(num * 1000) / 1000;
+		
+		// Map colors to indices
+		const colorMap = {};
+		let colorIndex = 0;
+		
+		// Transform pieces array (first pass to collect unique colors)
+		let pieces = data.pieces.map(piece => {
+			const roundedX = round3(piece.x);
+			const roundedY = round3(piece.y);
+			const roundedR = Math.round(piece.rotation / 45); // Normalize rotation to multiple of 45
+			
+			// Assign color index if not already assigned
+			if (!(piece.color in colorMap)) {
+				colorMap[piece.color] = colorIndex++;
+			}
+			
+			return {
+				t: typeMap[piece.type],
+				x: roundedX,
+				y: roundedY,
+				r: roundedR,
+				c: colorMap[piece.color]
+			};
+		});
+		
+		// Create the transformed object
+		return {
+			pn: data.projectName,
+			x: data.boardX,
+			y: data.boardY,
+			p: pieces,
+			cm: colorMap
+		};
+	}
+
+
+	/**
+	 * Decodes the compressed project data
+	 * 
+	 * @param {String} dataStr - the compressed project data to untransform
+	 * @returns {Object} - the untransformed project data
+	 */
+	unTransformData(dataStr) {
+
+		// custom JSON parser to handle unquoted keys
+		const data = JSON2.parse(dataStr);
+
+		// Mapping for type conversion
+		const typeMap = {
+			0: 'squareSM',
+			1: 'squareMD',
+			2: 'squareLG',
+			3: 'triangleSM',
+			4: 'triangleMD',
+			5: 'triangleLG',
+			6: 'parallelogramA',
+			7: 'parallelogramB',
+			8: 'trapezoid',
+		};
+
+		// the map of indexes to colors
+		const colorMap = {};
+		for (const [color, index] of Object.entries(data.cm)) 
+			colorMap[index] = color;
+		
+		// build new object with renamed properties
+		return {
+			projectName: data.pn,
+			boardX: data.x,
+			boardY: data.y,
+			pieces: data.p.map(piece => ({
+				id: crypto.randomUUID(),
+				type: typeMap[piece.t],
+				x: piece.x,
+				y: piece.y,
+				rotation: piece.r * 45,
+				color: colorMap[piece.c]
+			}))
+		};
+
+	}
+
 
 }
