@@ -163,13 +163,10 @@ export default class Piece {
 	/**
 	 * Rotates the piece left or right depending on if shift is held with the (e) event
 	 * 
-	 * @param {Event} e - the event object
-	 * @param {Boolean} snapToGrid - if true, snap to the grid
+	 * @param {Number} rotateAmount - the amount to rotate the piece
+	 * @param {Boolean} snapToGrid - (optional) if true, snap the piece to the
 	 */
-	rotate(e, snapToGrid=true) {
-
-		// if shift is held, rotate 45 degrees
-		const rotateAmount = e.shiftKey ? -45 : 45;
+	rotate(rotateAmount, snapToGrid=true) {
 
 		// rotate the piece
 		this.rotation.value += rotateAmount;
@@ -190,46 +187,46 @@ export const shapeData = {
 	squareSM: {
 		name: "Small Square",
 		points: [[0, -50], [50, 0], [0, 50], [-50, 0]],
-		defaultColor: '#000000',
+		defaultColor: '#FF6B6B', // Coral Red
 	},
 	squareMD: {
 		name: "Medium Square",
 		points: [[-50, -50], [50, -50], [50, 50], [-50, 50]],
-		defaultColor: 'blue', 
+		defaultColor: '#40E0D0', // Turquoise Blue
 	},
 	squareLG: {
 		name: "Large Square",
 		points: [[0, -100], [100, 0], [0, 100], [-100, 0]],
-		defaultColor: 'green',
+		defaultColor: '#00BFFF', // Deep Sky Blue
 	},
 	triangleSM: {
 		name: "Small Triangle",
 		points: [[-50, 17], [50, 17], [0, -33]],
-		defaultColor: 'orange',
+		defaultColor: '#FF4500', // Sunset Orange
 	},
 	triangleMD: {
 		name: "Medium Triangle",
 		points: [[-50+16.5, -50-16.5], [50+16.5, 50-16.5], [-50+16.5, 50-16.5]],
-		defaultColor: 'purple',
+		defaultColor: '#2E8B57', // Seafoam Green
 	},
 	triangleLG: {
 		name: "Large Triangle",
 		points: [[-100, 51], [0, -100+51], [100, 51]],
-		defaultColor: 'yellow',
+		defaultColor: '#DAA520', // Golden Sand
 	},
 	parallelogramA: {
 		name: "Parallelogram A",
 		points: [[50-75, -25], [150-75, -25], [100-75, 50-25], [-75, 50-25]],
-		defaultColor: 'pink',
+		defaultColor: '#FF1493', // Hot Pink (Tropical Flowers)
 	},
 	parallelogramB: {
 		name: "Parallelogram B",
 		points: [[-75, -25], [100-75, -25], [150-75, 50-25], [50-75, 50-25]],
-		defaultColor: 'brown',
+		defaultColor: '#00FFFF', // Aqua Blue
 	},
 	trapezoid: {
 		name: "Trapezoid",
 		points: [[50-75, -25], [100-75, -25], [150-75, 50-25], [-75, 50-25]],
-		defaultColor: 'gray',
+		defaultColor: '#FFA500', // Mango Orange
 	},
 };

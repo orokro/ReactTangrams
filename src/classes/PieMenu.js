@@ -15,7 +15,7 @@
 import { signal } from "@preact/signals-react";
 
 // our app
-import { TangramGame } from "./TangramGame";
+import { TangramGame } from "./TangramGame";	
 
 // PieMenu class
 export default class PieMenu {
@@ -37,13 +37,21 @@ export default class PieMenu {
 
 		// true when closing (for animation)
 		this.closing = signal(false);
+
+		// for closing callbacks
+		this.openContext = null;
+		this.onPick = null;
 	}
 
 	
 	/**
 	 * Show the pie menu
+	 * 
+	 * @param {Function} onPick - the callback when an item is picked
 	 */
-	show() {
+	show(onPick=null) {
+		this.onPick = onPick;
+
 		const currentCursorPos = this.game.dragHelper.getCursorPos()
 		this.x.value = currentCursorPos.x;
 		this.y.value = currentCursorPos.y;
@@ -64,15 +72,24 @@ export default class PieMenu {
 			// if closing is false, then we canceled the close
 			if (!this.closing.value) return;
 			this.isOpen.value = false;
+
+			// run the close callback
+			if (this.onPick) {
+				this.onPick();
+				this.onPick = null;
+			}
+			
 		}, 150);
 	}
 
 
 	/**
 	 * Toggle the pie menu
+	 * 
+	 * @param {Function} onPick - the callback when an item is picked
 	 */
-	toggle() {
-		this.isOpen.value ? this.hide() : this.show(); 
+	toggle(onPick=null) {		
+		this.isOpen.value ? this.hide() : this.show(onPick); 
 	}
 
 }

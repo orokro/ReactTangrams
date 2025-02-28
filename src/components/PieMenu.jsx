@@ -15,7 +15,12 @@ import { css } from "@emotion/react";
 import { useSignal } from "@preact/signals-react";
 
 // PieMenu component
-export const PieMenu = ({x, y, menuSize, onItemSelect, closing, children, ...props}) => {
+export const PieMenu = ({cssStyles, pieMenu, menuSize, onItemSelect, children, ...props}) => {
+
+	// break out some details from the pie menu
+	const x = pieMenu.x.value;
+	const y = pieMenu.y.value;
+	const closing = pieMenu.closing.value;
 
 	// default menu size
 	menuSize = menuSize || 400;
@@ -52,6 +57,8 @@ export const PieMenu = ({x, y, menuSize, onItemSelect, closing, children, ...pro
 				if (child.props.onClick)
 					child.props.onClick(event);				
 				onItemSelect(child.props.slug, index);
+				if(pieMenu.onPick) 
+					pieMenu.onPick(child.props.slug, index);
 			},
 
 			className: `${child.props.className || ""} pie-child-item`,
@@ -62,7 +69,7 @@ export const PieMenu = ({x, y, menuSize, onItemSelect, closing, children, ...pro
 
 	return (
 		<div
-			css={style}
+			css={[style, cssStyles]}
 			style={{
 				top: y + "px",
 				left: x + "px",

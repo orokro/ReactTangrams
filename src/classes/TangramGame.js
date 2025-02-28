@@ -33,9 +33,10 @@ export class TangramGame {
 		this.boardX = signal(0);
 		this.boardY = signal(0);
 		
-		// true when the pie-menu should be open & it's position where spawned
+		// our pie menus for adding and editing shapes
 		this.addShapePieMenu = new PieMenu(this);
-
+		this.editShapePieMenu = new PieMenu(this);
+		
 		// our list of spawned pieces
 		this.pieces = signal([]);
 	}

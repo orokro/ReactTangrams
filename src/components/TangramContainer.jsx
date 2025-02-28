@@ -137,7 +137,11 @@ export const TangramContainer = ({ game }) => {
 
 					{/* spawn active game pieces */}
 					{ 	game.pieces.value.map((piece, idx) => (
-							<Piece key={piece.id} piece={piece} game={game} />
+							<Piece
+								key={piece.id}
+								piece={piece}
+								game={game}
+							/>
 					))}
 				</div>
 				

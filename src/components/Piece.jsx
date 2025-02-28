@@ -20,6 +20,34 @@ import { Shape } from './Shape'
 // Piece component
 export const Piece = ({ piece, game, ...props }) => {
 
+	const handleEditMenu = (pickedItem, index) => {
+
+		switch (pickedItem) {
+			case "rotate180":
+				piece.rotate(180);
+				break;
+			case "rotate45":
+				piece.rotate(45);
+				break;
+			case "rotate90":
+				piece.rotate(90);
+				break;
+			case "rotate-90":
+				piece.rotate(-90);
+				break;
+			case "rotate-45":
+				piece.rotate(-45);
+				break;
+			case "pickColor":
+				game.pickColorPieMenu.toggle(piece);
+				break;
+			case "delete":
+				game.removePiece(piece.id);
+				game.editShapePieMenu.hide();
+				break;
+		}
+	};
+
 	return (
 		<div 
 			css={style}
@@ -56,7 +84,7 @@ export const Piece = ({ piece, game, ...props }) => {
 
 					// only right click
 					if (e.button !== 2) return;
-					piece.rotate(e);
+						game.editShapePieMenu.toggle(handleEditMenu);
 				}}
 			/>
 

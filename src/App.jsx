@@ -16,11 +16,13 @@ import "@preact/signals-react";
 import { HeaderBar } from './components/HeaderBar'
 import { TangramContainer } from './components/TangramContainer'
 import { AddPieceMenu } from './components/AddPieceMenu'
+import { EditPieceMenu } from "./components/EditPieceMenu";
 
 // app
 import { TangramGame } from './classes/TangramGame'
 
 // global css
+import "material-icons/iconfont/material-icons.css";
 import './App.css'
 
 function App() {
@@ -82,9 +84,23 @@ function App() {
 			{ game.addShapePieMenu.isOpen.value && (
 				<AddPieceMenu
 					game={game}
+					pieMenu={game.addShapePieMenu}
 					onItemSelect={handlePieItemSelect}
 					onMouseLeave={() => game.addShapePieMenu.hide()}
 				/>	
+			)}
+
+			{/* Optionally show Edit Pie Menu */}
+			{ game.editShapePieMenu.isOpen.value && (
+				<EditPieceMenu
+					game={game}
+					pieMenu={game.editShapePieMenu}
+					onItemSelect={(slug) => {
+						// game.editShapePieMenu.hide();
+						// game.deletePiece(slug);
+					}}
+					onMouseLeave={() => game.editShapePieMenu.hide()}
+				/>
 			)}
 		
 		</div>
