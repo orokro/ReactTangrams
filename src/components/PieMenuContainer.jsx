@@ -10,18 +10,17 @@
 import { AddPieceMenu } from './pie_menus/AddPieceMenu'
 import { EditPieceMenu } from "./pie_menus/EditPieceMenu";
 import { RotatePieceMenu } from "./pie_menus/RotatePieceMenu";
+import { ColorPieceMenu } from './pie_menus/ColorPieceMenu';
 
 // PieMenuContainer component
 export const PieMenuContainer = ({game, ...props}) => {
 
 	// handle when our pie menu picks an item
 	const handlePieItemSelect = (slug, idx) => {
-		// console.log(`Pie item selected: ${slug} at index ${idx}`);
 		game.addShapePieMenu.hide();
 		game.spawnPiece(slug);
 	};
 
-	
 	return (
 		<>
 			{/* Optionally show Pie Menu */}
@@ -59,6 +58,20 @@ export const PieMenuContainer = ({game, ...props}) => {
 					onMouseLeave={() => game.rotateShapePieMenu.hide()}
 				/>
 			)}
+
+			{/* Optionally show Color Pie Menu */}
+			{ game.colorShapePieMenu.isOpen.value && (
+				<ColorPieceMenu
+					game={game}
+					pieMenu={game.colorShapePieMenu}
+					onItemSelect={(slug) => {
+						// game.colorShapePieMenu.hide();
+						// game.pickColor(slug);
+					}}
+					onMouseLeave={() => game.colorShapePieMenu.hide()}
+				/>
+			)}
+
 		</>
 	);
 }

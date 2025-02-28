@@ -23,7 +23,7 @@ export const HeaderBar = ({ game }) => {
 					<a href="https://react.dev" target="_blank">
 						<img src={reactLogo} className="logo react" alt="React logo" />
 					</a>
-					React<span className="material-icons">rotate_left</span>
+					React
 				</h1>
 			</div>
 		</div>

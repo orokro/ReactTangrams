@@ -11,10 +11,11 @@ import { css } from "@emotion/react";
 import { useMemo } from "react";
 
 // PieItem component
-export const PieItem = ({ title, x, y, width, children, slug, ...props }) => {
+export const PieItem = ({ title, x, y, width, children, slug, toolTipText, ...props }) => {
 
 	// default width
 	width = width || 100;
+	toolTipText = toolTipText || title;
 
 	// memoize just dynamic styles
 	const dynamicStyle = useMemo(() => css`
@@ -37,6 +38,7 @@ export const PieItem = ({ title, x, y, width, children, slug, ...props }) => {
 		<div
 			css={[style, dynamicStyle]}
 			{...props}
+			title={toolTipText}
 		>
 			<div className="pie-thumb-container">
 				<div className="centerWrapper">

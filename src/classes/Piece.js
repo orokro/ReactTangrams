@@ -91,6 +91,8 @@ export default class Piece {
         let bestOffsetX = 0;
         let bestOffsetY = 0;
 
+		// well build a list of the rotated points so we can display them in the component
+		// for debug later. This is strictly for debugging purposes.
 		let rPoints = [];
 
 		// process each point in the piece
@@ -197,7 +199,8 @@ export default class Piece {
 				this.game.editShapePieMenu.hide();
 				break;
 			case "pickColor":
-				this.game.pickColorPieMenu.toggle(piece);
+				this.game.colorShapePieMenu.show(this.handleColorMenu.bind(this));
+				this.game.editShapePieMenu.hide();
 				break;
 			case "delete":
 				this.game.removePiece(this.id);
@@ -207,6 +210,22 @@ export default class Piece {
 	};
 
 
+	/**
+	 * Handles the color menu
+	 * 
+	 * @param {Event} event - the event that triggered the menu
+	 * @param {String} pickedItem - the item that was picked (slug)
+	 * @param {Number} index - the index of the item that was picked in the menu
+	 * 
+	 */
+	handleColorMenu(event, pickedItem, index) {
+
+		Util.stopEvent(event);
+		this.color.value = pickedItem;
+		this.game.colorShapePieMenu.hide();
+	}
+
+	
 	/**
 	 * Handles the rotate menu
 	 * 

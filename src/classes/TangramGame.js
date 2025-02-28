@@ -38,6 +38,7 @@ export class TangramGame {
 		this.editShapePieMenu = new PieMenu(this);
 		this.rotateShapePieMenu = new PieMenu(this);
 		this.sortShapePieMenu = new PieMenu(this);
+		this.colorShapePieMenu = new PieMenu(this);
 		
 		// our list of spawned pieces
 		this.pieces = signal([]);

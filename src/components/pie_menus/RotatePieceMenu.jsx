@@ -17,7 +17,6 @@ import { css } from "@emotion/react";
 import { PieMenu } from '../PieMenu';
 import { PieItem } from '../PieItem';
 
-
 // circle menu item width
 const menuItemWidth = 70;
 
