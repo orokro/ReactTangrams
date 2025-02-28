@@ -84,8 +84,8 @@ const style = css`
 		
 		// transparent gray circle
 		border-radius: 50%;
-		background-color: #DDDDDD99;
-		backdrop-filter: blur(3px);
+		background-color: #CCCCCCBB;
+		backdrop-filter: blur(4px);
 
 		// center whatever goes in
 		.centerWrapper {

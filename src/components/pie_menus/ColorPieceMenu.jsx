@@ -24,31 +24,29 @@ const menuItemWidth = 20;
 const colors = [
 
 	// 🔴 Reds
-	["#FF0000", "Pure Red"],
-	["#FF3300", "Bright Vermillion"],
-	["#FF4500", "Fiery Orange-Red"],
+	["#FF4500", "Sunset Orange"],
 	["#FF6347", "Tropical Tomato Red"],
 
 	// 🟠 Oranges
 	["#FF7F00", "Vivid Orange"],
-	["#FF9500", "Neon Tangerine"],
-	["#FFA500", "Pure Orange"],
 	["#FFB347", "Warm Sunset Orange"],
+	["#FFA500", "Mango Orange"],
 
 	// 🟡 Yellows
+	["#DAA520", "Golden Sand"],
 	["#FFD700", "Bright Gold"],
-	["#FFDD44", "Sunny Yellow"],
-	["#FFEE00", "Neon Yellow"],
 	["#FFFF33", "Highlighter Yellow"],
 
 	// 🟢 Greens
 	["#66FF00", "Electric Lime"],
 	["#32CD32", "Bright Lime Green"],
-	["#00FF00", "Pure Green"],
-	["#00FA9A", "Tropical Mint Green"],
+	["#2E8B57", "Seafoam Green"],
+	["#00FA9A", "Tropical Mint Green"],	
 
 	// 🔵 Teals & Blues
 	["#00FF7F", "Vivid Spring Green"],
+	["#00FFFF", "Aqua Blue"],
+	["#40E0D0", "Turquoise Blue"],
 	["#00CED1", "Deep Turquoise"],
 	["#00BFFF", "Tropical Sky Blue"],
 	["#1E90FF", "Bright Ocean Blue"],
@@ -56,13 +54,10 @@ const colors = [
 	// 🔵 Deep Blues
 	["#007FFF", "Electric Blue"],
 	["#0000FF", "Pure Blue"],
-	["#0000CD", "Saturated Royal Blue"],
-	["#191970", "Deep Midnight Blue"],
 
 	// 🟣 Purples
 	["#8000FF", "Bright Electric Purple"],
 	["#9400D3", "Deep Violet"],
-	["#9932CC", "Rich Amethyst"],
 	["#BA55D3", "Orchid Purple"],
 
 	// 🟣 Pinks & Magentas
@@ -73,9 +68,7 @@ const colors = [
 
 	// 🌈 Wrap-around warm tones
 	["#FF007F", "Neon Pinkish-Red"],
-	["#FF3366", "Warm Coral"],
-	["#FF5555", "Bright Tropical Rose"],
-	["#FF6666",  "Soft Warm Pink"],
+	["#FF6B6B", "Coral Red"],	
 ];
 
 // PieMenu component

@@ -50,5 +50,7 @@ const style = css`
 	// make the icons bigger than the default google material font size
 	.material-icons {
 		font-size: 50px !important;
+		color:white;
+		text-shadow: 1px 1px 1px #000;
 	}
 `;
