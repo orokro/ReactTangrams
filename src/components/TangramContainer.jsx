@@ -9,6 +9,7 @@
 // react imports
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
+import { useMemo } from "react";
 
 // libs
 import { useSignal } from "@preact/signals-react";
@@ -48,7 +49,7 @@ function generateGrid(width, color){
 
 // generate the grid bg pattern to use
 const gridSize = 20;
-const base64GridImage = generateGrid(gridSize, 'rgba(0, 0, 0, 1)');
+// const base64GridImage = generateGrid(gridSize, 'rgba(0, 0, 0, 1)');
 
 // main component export
 export const TangramContainer = ({ game }) => {
@@ -73,6 +74,13 @@ export const TangramContainer = ({ game }) => {
 		// start dragging the board
 		dragStart(e);
 	}
+
+	// memoize the base64 grid image based on light/dark mode and grid size
+	// using useMemo
+	const base64GridImage = useMemo(() => {
+		return generateGrid(gridSize, game.darkMode.value ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 1)');
+	}
+	, [game.darkMode.value]);
 
 	const dragStart = (e) => {
 
@@ -121,7 +129,9 @@ export const TangramContainer = ({ game }) => {
 				css={style}
 				className={classNames({ dragging: isDragging.value })}
 				style={{
-					backgroundPosition: `${game.boardX.value}px ${game.boardY.value}px`
+					backgroundPosition: `${game.boardX.value}px ${game.boardY.value}px`,
+					backgroundImage: `url(${base64GridImage})`,
+					backgroundColor: game.darkMode.value ? '#333' : '#fff',
 				}}
 				onMouseDown={handleMouseDown}
 				onMouseMove={handleMouseMove}
@@ -166,10 +176,6 @@ const style = css`
 	// fill the entire screen under the header
 	position: absolute;
 	inset: 52px 0px 0px 0px;
-
-	// background color
-	background-color: white;
-	background-image: url(${base64GridImage});
 
 	// make look inset with inner shadow
 	box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.3);

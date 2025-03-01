@@ -33,6 +33,10 @@ export const HeaderBar = ({ game }) => {
 		game.modalManager.openModal(ModalManager.MODALS.THREED);
 	}
 
+	const toggleDarkMode = () => {
+		game.darkMode.value = !game.darkMode.value;
+	}
+
 	return (
 		<div css={style}>
 			<div className="header-bar">
@@ -49,9 +53,14 @@ export const HeaderBar = ({ game }) => {
 					<HeaderBarIcon title="Help" onClick={showHelpModal}>
 						<span className="material-icons">help</span>
 					</HeaderBarIcon>
+					<HeaderBarIcon title="Toggle Light/Dark Mode" onClick={toggleDarkMode}>
+						<span className="material-icons">
+							{ game.darkMode.value ? "dark_mode" : "light_mode" }
+						</span>
+					</HeaderBarIcon>
 					<HeaderBarIcon title="View 3D" onClick={show3dModal}>
 						<span className="material-icons">3d_rotation</span>
-					</HeaderBarIcon>
+					</HeaderBarIcon>					
 
 				</div>
 
@@ -136,10 +145,13 @@ const style = css`
 			position: absolute;
 			inset: 0px auto auto 0px;
 
-			width: 210px;
+			width: 270px;
 
 			// padding
 			padding: 5px 0px 0px 6px;
+
+			// for debug
+			/* border: 1px solid red; */
 
 		}// .header-icons
 

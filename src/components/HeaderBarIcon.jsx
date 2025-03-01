@@ -40,7 +40,7 @@ const style = css`
 
 	// stack left w/ space on right
 	display: inline-block;
-	margin-right: 15px;
+	margin-right: 15.5px;
 
 	// appear clickable
 	cursor: pointer;

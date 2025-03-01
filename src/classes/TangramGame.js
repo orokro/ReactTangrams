@@ -36,6 +36,9 @@ export class TangramGame {
 		this.boardX = signal(0);
 		this.boardY = signal(0);
 
+		// dark mode?
+		this.darkMode = signal(false);
+		
 		// true when we want the project menu open (starts open)
 		this.projectPanelIsOpen = signal(true);
 		
