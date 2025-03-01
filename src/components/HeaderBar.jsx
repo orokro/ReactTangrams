@@ -11,8 +11,8 @@ import { css } from "@emotion/react";
 
 // assets and components
 import reactLogo from '../assets/react.svg'
-import classNames from "classnames";
 import { HeaderBarIcon } from "./HeaderBarIcon";
+import ModalManager from "../classes/ModalManager";
 
 // the main header bar component
 export const HeaderBar = ({ game }) => {
@@ -22,17 +22,16 @@ export const HeaderBar = ({ game }) => {
 	}
 
 	const showShareModel = () => {
-		// game.sharePanelIsOpen.value = !game.sharePanelIsOpen.value;
+		game.modalManager.openModal(ModalManager.MODALS.SHARE_URL);
 	}
 
 	const showHelpModal = () => {
-		// game.helpPanelIsOpen.value = !game.helpPanelIsOpen.value;
+		game.modalManager.openModal(ModalManager.MODALS.HELP);
 	}
 
 	const show3dModal = () => {
-		// game.threeDPanelIsOpen.value = !game.threeDPanelIsOpen.value;
+		game.modalManager.openModal(ModalManager.MODALS.THREED);
 	}
-
 
 	return (
 		<div css={style}>
@@ -81,16 +80,14 @@ const style = css`
 		inset: 0px 0px auto 0px;
 		z-index: 1000;
 
-		// 50 px thicc blue bar
+		// 50 px thicc blue bar with a bottom border
 		height: 50px;
 		background: #21b5c9;
+		border-bottom: 2px solid #1d7491;
 
 		// no wrapping / escaping
 		white-space: nowrap;
 		overflow: hidden;
-
-		// bottom border
-		border-bottom: 2px solid #1d7491;
 
 		h1 {
 

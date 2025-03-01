@@ -7,8 +7,7 @@
 
 // react
 /** @jsxImportSource @emotion/react */
-import React from "react";
-import { useEffect, useState, useRef } from "react";
+import { useRef } from "react";
 import { css } from "@emotion/react";
 import "@preact/signals-react";
 
@@ -17,6 +16,7 @@ import { HeaderBar } from './components/HeaderBar'
 import { TangramContainer } from './components/TangramContainer'
 import { PieMenuContainer } from "./components/PieMenuContainer"; 
 import { ProjectPanel } from "./components/ProjectPanel";
+import { ModalsContainer } from "./components/ModalsContainer";
 
 // app
 import { TangramGame } from './classes/TangramGame'
@@ -47,7 +47,7 @@ function App() {
 	// handle key down
 	const handleKeyDown = (e) => {
 
-		// toggle the menu if spacebar is pushed, and the event isnt focused in an input
+		// toggle the menu if spacebar is pushed, and the event isn't focused in an input
 		if (e.key === ' ' && e.target.tagName !== 'INPUT') {
 			e.preventDefault();
 			game.addShapePieMenu.toggle();
@@ -74,6 +74,9 @@ function App() {
 
 			{/* The project panel */}
 			<ProjectPanel game={game} />
+
+			{/* All our modals are compartmentalized in here... */}
+			<ModalsContainer game={game} />
 
 		</div>
 	)

@@ -9,13 +9,14 @@
 import DragHelper from "gdraghelper";
 
 // libs
-import { signal, useSignal } from "@preact/signals-react";
+import { signal } from "@preact/signals-react";
 
 // app classes
+import ProjectManager from "./ProjectManager";
+import ModalManager from "./ModalManager";
 import PieMenu from "./PieMenu";
 import Piece from "./Piece";
 import { shapeData } from "./Piece";
-import ProjectManager from "./ProjectManager";
 import { watch } from "../util/preact_watch";
 
 // main game state and logic here
@@ -51,6 +52,9 @@ export class TangramGame {
 		// disable save while loading to prevent feedback loop
 		this.isLoading = false;
 
+		// modal state goes here
+		this.modalManager = new ModalManager(this);
+
 		// make a project manager which will save and load projects
 		this.projectManager = new ProjectManager(this, this.loadProject.bind(this));
 
@@ -58,60 +62,9 @@ export class TangramGame {
 		watch([this.boardX, this.boardY, this.pieces], () => {
 			this.queueSaveProject();
 		});
-	}
 
-
-	/**
-	 * Serializes the game state to a JSON object
-	 * 
-	 * @returns {Object} - the game state as a JSON object
-	 */
-	serializeToJSON() {
-		
-		return {
-			boardX: this.boardX.value,
-			boardY: this.boardY.value,
-			pieces: this.pieces.value.map(piece => piece.serializeToJSON())
-		};
-	}
-
-
-	/**
-	 * Loads the game state from a JSON object
-	 * 
-	 * @param {Object} data - the game state as a JSON object
-	 */
-	deserializeFromJSON(data) {
-
-		console.log('loading in game', data);
-		
-		// if no pieces, clear board & gtfo
-		if (!data.pieces){
-			this.pieces.value = [];
-			return;
-		}
-
-		// true till we're done loading
-		this.isLoading = true;
-
-		// load our board position
-		this.boardX.value = data.boardX ? data.boardX : 0;
-		this.boardY.value = data.boardY ? data.boardY : 0;
-
-		// clear the pieces
-		this.pieces.value = [];
-
-		// load the pieces into new array
-		setTimeout(() => {
-			this.pieces.value = data.pieces.map(pieceData => {
-				const piece = new Piece(this, pieceData.type);
-				piece.deserializeFromJSON(pieceData);
-				return piece;
-			});
-
-			// done loading
-			this.isLoading = false;
-		}, 0);
+		// show welcome on load
+		this.modalManager.openModal(ModalManager.MODALS.WELCOME);
 	}
 
 
@@ -201,6 +154,58 @@ export class TangramGame {
 			this.projectManager.save(this.serializeToJSON());
 			this.saveQueued = 0;
 		}, 100);
+	}
+
+
+	/**
+	 * Serializes the game state to a JSON object
+	 * 
+	 * @returns {Object} - the game state as a JSON object
+	 */
+	serializeToJSON() {
+		
+		return {
+			boardX: this.boardX.value,
+			boardY: this.boardY.value,
+			pieces: this.pieces.value.map(piece => piece.serializeToJSON())
+		};
+	}
+
+
+	/**
+	 * Loads the game state from a JSON object
+	 * 
+	 * @param {Object} data - the game state as a JSON object
+	 */
+	deserializeFromJSON(data) {
+		
+		// if no pieces, clear board & gtfo
+		if (!data.pieces){
+			this.pieces.value = [];
+			return;
+		}
+
+		// true till we're done loading
+		this.isLoading = true;
+
+		// load our board position
+		this.boardX.value = data.boardX ? data.boardX : 0;
+		this.boardY.value = data.boardY ? data.boardY : 0;
+
+		// clear the pieces
+		this.pieces.value = [];
+
+		// load the pieces into new array
+		setTimeout(() => {
+			this.pieces.value = data.pieces.map(pieceData => {
+				const piece = new Piece(this, pieceData.type);
+				piece.deserializeFromJSON(pieceData);
+				return piece;
+			});
+
+			// done loading
+			this.isLoading = false;
+		}, 0);
 	}
 	
 }

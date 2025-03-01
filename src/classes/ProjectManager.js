@@ -157,8 +157,6 @@ export default class ProjectManager {
         const projectId = typeof project === 'string' ? project : project.id;
         const foundProject = this.projects.value.find(p => p.id === projectId);
 
-		console.log("found project?", foundProject);
-
 		// if found, set the selected project and call the onLoad callback
         if (foundProject) {
             this.selectedProject.value = foundProject.id;
@@ -328,7 +326,6 @@ export default class ProjectManager {
 			fromURL: dataURL
 		};
 
-		console.log(newProject);
 		// create & load the project
 		this.projects.value = [...this.projects.value, newProject];
 		await this._saveProjectsToStorage();
