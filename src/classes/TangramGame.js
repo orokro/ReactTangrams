@@ -16,6 +16,8 @@ import ProjectManager from "./ProjectManager";
 import ModalManager from "./ModalManager";
 import PieMenu from "./PieMenu";
 import Piece from "./Piece";
+import ImportExportManager from "./ImportExportManager";
+
 import { shapeData } from "./Piece";
 import { watch } from "../util/preact_watch";
 
@@ -61,6 +63,9 @@ export class TangramGame {
 		// make a project manager which will save and load projects
 		this.projectManager = new ProjectManager(this, this.loadProject.bind(this));
 
+		// helps with importing and exporting projects
+		this.importExportManager = new ImportExportManager(this);
+		
 		// save project when these change
 		watch([this.boardX, this.boardY, this.pieces], () => {
 			this.queueSaveProject();
@@ -68,6 +73,7 @@ export class TangramGame {
 
 		// show welcome on load
 		this.modalManager.openModal(ModalManager.MODALS.WELCOME);
+		
 	}
 
 

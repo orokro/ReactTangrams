@@ -17,6 +17,7 @@ import ModalManager from "../classes/ModalManager";
 // components
 import { ModalLayer } from './ModalLayer'
 import { WelcomeModal } from "./modals/WelcomeModal";
+import { ImportExportModal } from "./modals/ImportExportModal";
 import { ShareLinkModal } from "./modals/ShareLinkModal";
 import { HelpModal } from "./modals/HelpModal";
 import { ThreeDViewModal } from "./modals/ThreeDViewModal";
@@ -36,6 +37,9 @@ export const ModalsContainer = ({ game }) => {
 
 			{ modalManager.currentModal.value == ModalManager.MODALS.WELCOME && (
 				<WelcomeModal game={game} onClose={handleClose} />) }
+
+			{ modalManager.currentModal.value == ModalManager.MODALS.IMPORT_EXPORT && (
+				<ImportExportModal game={game} onClose={handleClose} />) }
 
 			{ modalManager.currentModal.value == ModalManager.MODALS.SHARE_URL && (
 				<ShareLinkModal game={game} onClose={handleClose} />) }

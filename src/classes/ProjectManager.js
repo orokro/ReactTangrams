@@ -248,7 +248,7 @@ export default class ProjectManager {
         }
     }
 
-
+	
 	/**
 	 * Helper to validate a project name
 	 * 

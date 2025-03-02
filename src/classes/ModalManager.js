@@ -24,8 +24,7 @@ export default class ModalManager {
 
 		WELCOME: "WELCOME",
 		SHARE_URL: "SHARE_URL",
-		EXPORT: "EXPORT",
-		IMPORT: "IMPORT",
+		IMPORT_EXPORT: "IMPORT_EXPORT",
 		HELP: "HELP",
 		THREED: "THREED",
 		MSGBOX: "MSGBOX",

@@ -21,6 +21,10 @@ export const HeaderBar = ({ game }) => {
 		game.projectPanelIsOpen.value = !game.projectPanelIsOpen.value;
 	}
 
+	const showIOModal = () => {
+		game.modalManager.openModal(ModalManager.MODALS.IMPORT_EXPORT);
+	}
+
 	const showShareModel = () => {
 		game.modalManager.openModal(ModalManager.MODALS.SHARE_URL);
 	}
@@ -46,6 +50,9 @@ export const HeaderBar = ({ game }) => {
 
 					<HeaderBarIcon title="Projects" active={game.projectPanelIsOpen.value} onClick={toggleProjectPanel}>
 						<span className="material-icons">folder</span>
+					</HeaderBarIcon>
+					<HeaderBarIcon title="Share" onClick={showIOModal}>
+						<span className="material-icons">import_export</span>
 					</HeaderBarIcon>
 					<HeaderBarIcon title="Share" onClick={showShareModel}>
 						<span className="material-icons">share</span>
