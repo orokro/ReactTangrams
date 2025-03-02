@@ -22,7 +22,13 @@ import { ErrorBoundary } from "./ErrorBoundary";
 // Main Component Export
 export const ProjectRender = ({ game }) => {
 	return (
-		<div style={{ width: "100%", height: "100%", position: "relative" }}>
+		<div 
+			style={{
+				width: "100%",
+				height: "100%",
+				position: "relative",
+			}}
+		>
 			<ErrorBoundary>
 				<ResponsiveCanvas>
 					<TangramScene game={game} />

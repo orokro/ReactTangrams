@@ -53,7 +53,9 @@ export const ThreeDViewModal = ({ game, onClose }) => {
 			style={{ width: '900px', maxHeight: '70%' }}
 		>
 			<div css={style}>
-				<ProjectRender game={game} />
+				<div className="cancelMargin">
+					<ProjectRender game={game} />
+				</div>
 			</div>
 			<ModalButtonBar
 				buttonsList={[
@@ -68,12 +70,15 @@ export const ThreeDViewModal = ({ game, onClose }) => {
 // styles
 const style = css`
 
-	// center the text
-	text-align: center;
-
-	width: 800px;
+	position: relative;
+	width: 900px;
 	height: 600px;
 
+	border-bottom: 1px solid #858585;
 	margin-bottom: 10px;
-	overflow-y: auto;	
+
+	.cancelMargin {
+		position: absolute;
+		inset: -18px -20px 0px -20px;
+	}
 `;
