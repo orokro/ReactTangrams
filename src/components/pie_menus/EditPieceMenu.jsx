@@ -34,15 +34,15 @@ export const EditPieceMenu = ({game, onItemSelect, children, ...props}) => {
 			<PieItem width={80} title="Pick Color" slug="pickColor">
 				<span className="material-icons">palette</span>
 			</PieItem>
-			<PieItem width={80} title="Sort" slug="sort">
-				<span className="material-icons">swap_vert</span>
+			<PieItem width={80} title="Rotate" slug="rotate">
+				<span className="material-icons">refresh</span>
 			</PieItem>
 			<PieItem width={80} title="Delete" slug="delete">
 				<span className="material-icons">delete</span>
 			</PieItem>
-			<PieItem width={80} title="Rotate" slug="rotate">
-				<span className="material-icons">refresh</span>
-			</PieItem>	
+			<PieItem width={80} title="Sort" slug="sort">
+				<span className="material-icons">swap_vert</span>
+			</PieItem>			
 		</PieMenu>
 	);
 }
