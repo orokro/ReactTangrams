@@ -49,7 +49,7 @@ export const ImportExportModal = ({ game, onClose }) => {
                 try {
 
 					const JSONString = e.target.result;         
-					          
+
                     // Clear the input field
                     if (fileInputRef.current) {
                         fileInputRef.current.value = "";
@@ -82,6 +82,7 @@ export const ImportExportModal = ({ game, onClose }) => {
 			modalKey={ModalManager.MODALS.WELCOME}
 			showClose={true}
 			title="Import / Export"
+			materialIcon="import_export"
 			onClose={handleClose}
 			style={{ width: '450px', minWidth: '450px', maxHeight: '70%' }}
 		>

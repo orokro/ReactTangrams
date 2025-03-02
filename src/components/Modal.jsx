@@ -17,7 +17,7 @@ import classNames from "classnames";
 
 // forward ref component so we can call close
 export const Modal = forwardRef(
-	({game, modalKey, title, showClose, allowEscapeToClose, onClose, children, ...props}, ref) => {
+	({game, modalKey, title, showClose, materialIcon, allowEscapeToClose, onClose, children, ...props}, ref) => {
 
 	// default values
 	showClose = showClose ?? true;
@@ -72,6 +72,7 @@ export const Modal = forwardRef(
 
 			<div className="modal-header">
 				<h2>{title}</h2>
+				<span className="headerIcon material-icons">{materialIcon}</span>
 				{showClose && (
 					<div className="cmdClose" title="close" onClick={close}>
 						<span className="material-icons">close</span>
@@ -130,6 +131,24 @@ const style = css`
 		height: 40px;
 		background: #21b5c9;
 		border-bottom: 2px solid #1d7491;
+
+		// material icon on the header bar
+		.headerIcon {
+
+			// fixed on top-left
+			position: absolute;
+			top: 5px;
+			left: 10px;
+
+			// white with shadow like header text
+			color: white;
+			text-shadow: 3px 2px 1px #1d7491;
+			
+			// slightly bigger
+			font-size: 32px;
+
+		}// .headerIcon
+
 
 		// title
 		h2 {

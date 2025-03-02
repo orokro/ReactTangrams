@@ -46,6 +46,7 @@ export const HelpModal = ({ game, onClose }) => {
 			modalKey={ModalManager.MODALS.HELP}
 			showClose={true}
 			title="Help"
+			materialIcon="help"
 			onClose={handleClose}
 			style={{ width: '900px', maxHeight: '70%' }}
 		>

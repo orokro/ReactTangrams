@@ -47,6 +47,7 @@ export const ThreeDViewModal = ({ game, onClose }) => {
 			modalKey={ModalManager.MODALS.THREED}
 			showClose={true}
 			title="Live 3D View"
+			materialIcon="3d_rotation"
 			onClose={handleClose}
 			style={{ width: '900px', maxHeight: '70%' }}
 		>

@@ -66,6 +66,7 @@ export const ShareLinkModal = ({ game, onClose }) => {
 			modalKey={ModalManager.MODALS.SHARE_URL}
 			showClose={true}
 			title="Share Project"
+			materialIcon="share"
 			onClose={handleClose}
 		>
 			<div css={style}>
