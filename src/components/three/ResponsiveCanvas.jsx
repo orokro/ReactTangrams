@@ -9,15 +9,6 @@
 // React and R3F
 import React, { useRef, useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import * as THREE from "three";
-import { extend } from "@react-three/fiber";
-
-// Ensure required Three.js features are extended
-extend({
-	ExtrudeGeometry: THREE.ExtrudeGeometry,
-	MeshStandardMaterial: THREE.MeshStandardMaterial,
-	EquirectangularReflectionMapping: THREE.EquirectangularReflectionMapping,
-});
 
 // Main component
 export const ResponsiveCanvas = ({ children }) => 

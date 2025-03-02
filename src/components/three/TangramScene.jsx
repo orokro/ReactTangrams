@@ -6,22 +6,12 @@
 */
 
 // react and r3f stuffs
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useThree } from "@react-three/fiber";
 import { OrbitControls, useTexture, Environment } from "@react-three/drei";
-import * as THREE from "three";
-import { extend } from "@react-three/fiber";
-
-// Ensure required Three.js features are extended
-extend({
-	ExtrudeGeometry: THREE.ExtrudeGeometry,
-	MeshStandardMaterial: THREE.MeshStandardMaterial,
-	EquirectangularReflectionMapping: THREE.EquirectangularReflectionMapping,
-});
-
 
 // other components
-import { Piece } from "./Piece3D";
+import { Piece3D } from "./Piece3D";
 
 // import { extend } from "@react-three/fiber";
 // extend(THREE);
@@ -40,6 +30,16 @@ export const TangramScene = ({game}) => {
 	const currentProject = game.projectManager.getSelectedProject();
 	const pieces = currentProject.data.pieces;
 
+	// Compute center of all pieces
+    const { centerX, centerY } = useMemo(() => {
+        if (pieces.length === 0) return { centerX: 0, centerY: 0 };
+        let sumX = 0, sumY = 0;
+        pieces.forEach(p => {
+            sumX += p.x;
+            sumY += p.y;
+        });
+        return { centerX: sumX / pieces.length, centerY: sumY / pieces.length };
+    }, [pieces]);
 
 	const [hdri, setHdri] = useState("A");
 	const { scene } = useThree();
@@ -47,12 +47,18 @@ export const TangramScene = ({game}) => {
 
 	return (
 		<>
+			{/* Lights */}
 			<ambientLight intensity={0.5} />
-			<directionalLight position={[10, 10, 10]} intensity={1} />
-			<OrbitControls />
+            <directionalLight position={[10, 10, 10]} intensity={1} />
 
-			{pieces.map((piece) => (
-				<Piece key={piece.id} {...piece} />
+            {/* Camera Controls */}
+            <OrbitControls
+                target={[centerX, 0, centerY]} // Look at the computed center
+                makeDefault
+            />
+
+			{pieces.map((piece, index) => (
+				<Piece3D key={piece.id} {...piece} index={index} game={game} />
 			))}
 		</>
 	);
