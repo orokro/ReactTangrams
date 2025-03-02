@@ -14,6 +14,7 @@ import { useRef } from "react";
 // components
 import { Modal } from "../Modal";
 import { ModalButtonBar } from "../ModalButtonBar";
+import { ProjectRender } from "../three/ProjectRender";	
 
 // our classes
 import ModalManager from "../../classes/ModalManager";
@@ -52,18 +53,11 @@ export const ThreeDViewModal = ({ game, onClose }) => {
 			style={{ width: '900px', maxHeight: '70%' }}
 		>
 			<div css={style}>
-				<h2>3D Will Go Here Eventually</h2>
-
-				{/* an image pointing to a famous render of a teapot */}
-				<img 
-					src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Utah_teapot_simple_2.png/1920px-Utah_teapot_simple_2.png" 
-					alt="famous teapot render"
-					style={{ width: '80%' }}
-				/>
+				<ProjectRender game={game} />
 			</div>
 			<ModalButtonBar
 				buttonsList={[
-					['woah, nice teapot', 'close', true],
+					['close', 'close', true],
 				]}
 				onButtonClicked={buttonClicked}
 			/>
@@ -77,7 +71,9 @@ const style = css`
 	// center the text
 	text-align: center;
 
+	width: 800px;
 	height: 600px;
+
 	margin-bottom: 10px;
 	overflow-y: auto;	
 `;
