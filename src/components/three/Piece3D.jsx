@@ -64,7 +64,7 @@ export const Piece3D = ({ type, x, y, rotation, color, game, index }) => {
         >
             <meshStandardMaterial 
 				color={color}
-				roughness={0.1}
+				roughness={0}
 			/>
         </mesh>
     );

@@ -106,13 +106,12 @@ const style = css`
 
 		h1 {
 
-			pointer-events: none;
+			position: absolute;
+			inset: -5px 0px 0px 330px;
 
 			// spacing & positioning
 			margin: 0px;
 			padding-top: 0px;
-			position: relative;
-			top: -4px;
 
 			// text settings
 			font-size: 32px;
