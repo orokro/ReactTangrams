@@ -39,7 +39,7 @@ export class TangramGame {
 		this.boardY = signal(0);
 
 		// tweak variable for 3d mode
-		this.zIndexOffset = signal(1);
+		this.zIndexOffset = signal(0.05);
 
 		// dark mode?
 		this.darkMode = signal(false);

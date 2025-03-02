@@ -48,8 +48,8 @@ export const TangramScene = ({game}) => {
 	return (
 		<>
 			{/* Lights */}
-			<ambientLight intensity={0.5} />
-            <directionalLight position={[10, 10, 10]} intensity={1} />
+			<ambientLight intensity={0.75} />
+            <directionalLight position={[10, 10, 10]} intensity={2} />
 
             {/* Camera Controls */}
             <OrbitControls

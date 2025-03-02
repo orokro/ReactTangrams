@@ -22,14 +22,17 @@ import { shapeData } from "../../classes/Piece";
 function createShapeGeometry(points) {
 	const shape = new Shape();
 
+	const scale = 1.10;
+
 	// Swap Y → Z so the shapes generate lying flat
-	shape.moveTo(points[0][0] * 1.2, points[0][1] * 1.2);
-	points.slice(1).forEach(([x, y]) => shape.lineTo(x * 1.2, y * 1.2));
+	shape.moveTo(points[0][0] * scale, points[0][1] * scale);
+	points.slice(1).forEach(([x, y]) => shape.lineTo(x * scale, y * scale));
 
 	return new ExtrudeGeometry(shape, {
 		depth: 25,
 		bevelEnabled: true,
-		bevelSize: 1,
+		bevelSize: 5,
+		bevelThickness: 2,
 
 	});
 }
@@ -41,22 +44,28 @@ Object.entries(shapeData).forEach(([key, data]) => {
 	shapeGeometries[key] = createShapeGeometry(data.points);
 });
 
-const scaleFactor = 1; // Scale down everything
+
 
 // Component for an individual piece
-export const Piece3D = ({ type, x, y, rotation, color }) => {
+export const Piece3D = ({ type, x, y, rotation, color, game, index }) => {
 
 	const meshRef = useRef();
 
-	return (
-		<mesh
-			ref={meshRef}
-			geometry={shapeGeometries[type]}
-			position={[x * scaleFactor, 2.5 * scaleFactor, y * scaleFactor]}
-			rotation={[Math.PI/2, 0, (rotation * Math.PI) / 180]} 
-			scale={[scaleFactor, scaleFactor, scaleFactor]}
-		>
-			<meshStandardMaterial color={color} />
-		</mesh>
-	);
+	const scaleFactor = 1;
+	const heightIncrease = game.zIndexOffset.value * index;
+    
+    return (
+        <mesh
+            ref={meshRef}
+            geometry={shapeGeometries[type]}
+            position={[x * scaleFactor, 0, y * scaleFactor]} // Move up by heightIncrease
+            rotation={[Math.PI / 2, 0, (rotation * Math.PI) / 180]} // Keep correct rotation
+            scale={[scaleFactor, scaleFactor, -(1 + heightIncrease)]} // Scale taller
+        >
+            <meshStandardMaterial 
+				color={color}
+				roughness={0.1}
+			/>
+        </mesh>
+    );
 };
