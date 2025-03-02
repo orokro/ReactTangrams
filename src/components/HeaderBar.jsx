@@ -51,7 +51,7 @@ export const HeaderBar = ({ game }) => {
 					<HeaderBarIcon title="Projects" active={game.projectPanelIsOpen.value} onClick={toggleProjectPanel}>
 						<span className="material-icons">folder</span>
 					</HeaderBarIcon>
-					<HeaderBarIcon title="Share" onClick={showIOModal}>
+					<HeaderBarIcon title="Import / Export" onClick={showIOModal}>
 						<span className="material-icons">import_export</span>
 					</HeaderBarIcon>
 					<HeaderBarIcon title="Share" onClick={showShareModel}>
@@ -83,7 +83,6 @@ export const HeaderBar = ({ game }) => {
 		</div>
 	);
 }
-
 
 // styles
 const style = css`

@@ -147,6 +147,46 @@ export default class ProjectManager {
 
 
 	/**
+	 * Import a project from a JSON string
+	 * 
+	 * @param {String} jsonString - the JSON string representing the project
+	 */
+	async importProjectFromJSONString(jsonString) {
+		try {
+			// Parse the JSON string
+			const projectData = JSON.parse(jsonString);
+
+			// Replace the ID with a new one
+			projectData.id = crypto.randomUUID();
+
+			// Add the new project to the projects array
+			const newProjectsArray = [...this.projects.value, projectData];
+
+			// clear array before we add the new project
+			this.projects.value = [];
+
+			setTimeout(async () => {
+
+				// update array
+				this.projects.value = newProjectsArray;
+				
+				// Save the projects to storage
+				await this._saveProjectsToStorage();
+
+				// Load the new project
+				this.loadProject(projectData.id);
+
+				// Select the new project
+				this.selectedProject.value = projectData.id;
+			}, 0);
+
+		} catch (error) {
+			console.error("Failed to import project from JSON string:", error);
+		}
+	}
+
+
+	/**
 	 * Load a project
 	 * 
 	 * @param {Object|String} project - the project object or the project id
@@ -248,7 +288,7 @@ export default class ProjectManager {
         }
     }
 
-	
+
 	/**
 	 * Helper to validate a project name
 	 * 

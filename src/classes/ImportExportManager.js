@@ -206,4 +206,16 @@ export default class ImportExportManager {
 		`;
 	}
 
+
+	/**
+	 * Light wrapper for importing a project from JSON
+	 *
+	 * @param {String} jsonString - the JSON string to import
+	 */	
+	importJSON(jsonString) {
+
+		// ez
+		this.game.projectManager.importProjectFromJSONString(jsonString);
+	}
+
 }
