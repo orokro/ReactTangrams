@@ -35,7 +35,7 @@ export const ResponsiveCanvas = ({ children }) =>
 		<div ref={containerRef} style={{ width: "100%", height: "100%" }}>
 			<Canvas
 				style={{ background: "transparent" }}
-				camera={{ position: [0, 200, 300], fov: 50 }}
+				camera={{ position: [0, 200, 300], fov: 50, near: 0.1, far: 8000 }}
 				gl={{ preserveDrawingBuffer: false }} // Prevents WebGL context loss issues
 				onContextLost={(event) => {
 					console.warn("WebGL context lost", event);
