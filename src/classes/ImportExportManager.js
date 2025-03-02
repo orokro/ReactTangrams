@@ -12,6 +12,9 @@
 	contain the logic to handle the import/export of projects.
 */
 
+// libs
+import { saveSvgAsPng } from "save-svg-as-png";
+
 // our app imports
 import { shapeData } from "./Piece";
 
@@ -40,6 +43,7 @@ export default class ImportExportManager {
 		// bind all functions to this class
 		this.exportJSON = this.exportJSON.bind(this);
 		this.exportSVG = this.exportSVG.bind(this);
+		this.exportPNG = this.exportPNG.bind(this);
 	}
 
 
@@ -83,54 +87,75 @@ export default class ImportExportManager {
 
 
 	/**
+	 * Export the current project as PNG
+	 */
+	exportPNG() {
+
+		// get current project JSON
+		const currentProject = this.game.projectManager.getSelectedProject();
+		const pieces = currentProject.data.pieces;
+
+		// Generate the SVG string
+		const svgString = this.generateCombinedSVG(pieces, shapeData, 1.2);
+
+		// Create a temporary container for the SVG
+		const tempContainer = document.createElement("div");
+		tempContainer.innerHTML = svgString;
+		document.body.appendChild(tempContainer);
+
+		const svgElement = tempContainer.querySelector("svg");
+		if (!svgElement) return;
+
+		// Export the SVG as a PNG
+		saveSvgAsPng(svgElement, "tangram.png", { scale: 2, backgroundColor: "transparent" });
+
+		// Remove the temporary container
+		document.body.removeChild(tempContainer);
+	};
+
+
+	/**
 	 * Generate an SVG string for the given pieces
 	 * 
 	 * @param {Array} pieces - the pieces to render
 	 * @param {Object} shapeData - the shape data
 	 * @returns {String} - the SVG string
 	 */
-	generateCombinedSVG(pieces, shapeData, rawScale = 1){
+	generateCombinedSVG(pieces, shapeData, rawScale = 1) {
 
 		// Handle empty case
-		if (pieces.length === 0) 
-			return ""; 
-	
-		// keep track of the bounding box
+		if (pieces.length === 0)
+			return "";
+
 		let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
 		let paths = "";
-	
+
 		// Iterate over each piece
 		pieces.forEach(piece => {
 
 			const { type, x, y, rotation, color } = piece;
 			const shape = shapeData[type];
-			if (!shape)
-				return;
-	
+			if (!shape) return;
+
 			// Transform the shape points into an SVG path, applying x, y offsets and rotation
 			const points = shape.points.map(([px, py]) => {
-
 				// Apply scaling
 				px *= rawScale;
 				py *= rawScale;
-	
+
 				// Convert rotation to radians
 				const angleRad = (rotation * Math.PI) / 180;
 				const cosTheta = Math.cos(angleRad);
 				const sinTheta = Math.sin(angleRad);
-	
+
 				// Apply rotation
 				const rotatedX = px * cosTheta - py * sinTheta;
 				const rotatedY = px * sinTheta + py * cosTheta;
-	
+
 				// Apply translation
 				return [rotatedX + x, rotatedY + y];
 			});
-	
-			// Build the path string
-			const d = `M ${points.map(p => p.join(",")).join(" L ")} Z`;
-			paths += `<path d="${d}" fill="${color || shape.defaultColor}" stroke="#000" stroke-width="2" />\n`;
-	
+
 			// Update bounding box calculations
 			points.forEach(([px, py]) => {
 				minX = Math.min(minX, px);
@@ -139,19 +164,40 @@ export default class ImportExportManager {
 				maxY = Math.max(maxY, py);
 			});
 		});
-	
+
 		// Add padding around the bounding box
 		const padding = 20;
 		minX -= padding;
 		minY -= padding;
 		maxX += padding;
 		maxY += padding;
-	
+
 		// Compute viewBox values
 		const width = maxX - minX;
 		const height = maxY - minY;
-		const viewBox = `${minX} ${minY} ${width} ${height}`;
-	
+		const viewBox = `0 0 ${width} ${height}`;
+
+		// Adjust all paths to be positioned relative to the new viewBox
+		pieces.forEach(piece => {
+			const { type, x, y, rotation, color } = piece;
+			const shape = shapeData[type];
+			if (!shape) return;
+
+			const points = shape.points.map(([px, py]) => {
+				px *= rawScale;
+				py *= rawScale;
+				const angleRad = (rotation * Math.PI) / 180;
+				const cosTheta = Math.cos(angleRad);
+				const sinTheta = Math.sin(angleRad);
+				const rotatedX = px * cosTheta - py * sinTheta;
+				const rotatedY = px * sinTheta + py * cosTheta;
+				return [rotatedX + x - minX, rotatedY + y - minY];
+			});
+
+			const d = `M ${points.map(p => p.join(",")).join(" L ")} Z`;
+			paths += `<path d="${d}" fill="${color || shape.defaultColor}" stroke="#000" stroke-width="2" />\n`;
+		});
+
 		// Generate final SVG
 		return `
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" width="${width}" height="${height}">

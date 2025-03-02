@@ -67,7 +67,9 @@ export const ImportExportModal = ({ game, onClose }) => {
 					</li>
 					<li>
 						<span className="material-icons">download</span>
-						<a>Download the current project as a PNG file.</a>
+						<a onClick={game.importExportManager.exportPNG}>
+							Download the current project as an PNG file.
+						</a>
 					</li>					
 				</ul>
 
