@@ -10,6 +10,7 @@
 import { AddPieceMenu } from './pie_menus/AddPieceMenu'
 import { EditPieceMenu } from "./pie_menus/EditPieceMenu";
 import { RotatePieceMenu } from "./pie_menus/RotatePieceMenu";
+import { SortPieceMenu } from './pie_menus/SortPieceMenu';
 import { ColorPieceMenu } from './pie_menus/ColorPieceMenu';
 
 // PieMenuContainer component
@@ -56,6 +57,17 @@ export const PieMenuContainer = ({game, ...props}) => {
 						// game.rotatePiece(slug);
 					}}
 					onMouseLeave={() => game.rotateShapePieMenu.hide()}
+				/>
+			)}
+
+			{/* Optionally show Sort Order Pie Menu */}
+			{ game.sortShapePieMenu.isOpen.value && (
+				<SortPieceMenu
+					game={game}
+					pieMenu={game.sortShapePieMenu}
+					onItemSelect={(slug) => {
+					}}
+					onMouseLeave={() => game.sortShapePieMenu.hide()}
 				/>
 			)}
 

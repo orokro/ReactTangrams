@@ -31,6 +31,7 @@ export const Piece = ({ piece, game, ...props }) => {
 			style={{
 				left: `${piece.x.value}px`,
 				top: `${piece.y.value}px`,
+				...props.style
 			}}
 		>
 			<Shape

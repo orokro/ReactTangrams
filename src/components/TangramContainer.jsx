@@ -180,6 +180,9 @@ const style = css`
 	// make look inset with inner shadow
 	box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.3);
 
+	// animate bg
+	transition: background-color 0.3s;
+
 	// appear like a pan-able surface to the user via cursor
 	cursor: grab;
 	&.dragging {

@@ -234,6 +234,10 @@ export default class Piece {
 				this.game.rotateShapePieMenu.show(this.handleRotateMenu.bind(this));
 				this.game.editShapePieMenu.hide();
 				break;
+			case "sort":
+				this.game.sortShapePieMenu.show(this.handleSortMenu.bind(this));
+				this.game.editShapePieMenu.hide();
+				break;
 			case "pickColor":
 				this.game.colorShapePieMenu.show(this.handleColorMenu.bind(this));
 				this.game.editShapePieMenu.hide();
@@ -290,6 +294,35 @@ export default class Piece {
 				this.rotate(-45);
 				break;
 		}// swatch
+	}
+
+
+
+	/**
+	 * Handles the sort up/down menu
+	 * 
+	 * @param {Event} event - the event that triggered the menu
+	 * @param {String} pickedItem - the item that was picked (slug)
+	 * @param {Number} index - the index of the item that was picked in the menu
+	 */
+	handleSortMenu(event, pickedItem, index){
+		Util.stopEvent(event);
+
+		switch (pickedItem) {
+			case "sendForward":
+				this.game.movePieceForward(this);
+				break;
+			case "sendBackward":
+				this.game.movePieceBack(this);
+				break;
+			case "sendToBack":
+				this.game.sendPieceToBack(this);
+				break;
+			case "sendToFront":
+				this.game.sendPieceToFront(this);
+				break;
+		}// swatch
+
 	}
 
 }

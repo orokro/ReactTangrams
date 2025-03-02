@@ -38,10 +38,10 @@ export class TangramGame {
 
 		// dark mode?
 		this.darkMode = signal(false);
-		
+
 		// true when we want the project menu open (starts open)
 		this.projectPanelIsOpen = signal(true);
-		
+
 		// our pie menus for adding and editing shapes
 		this.addShapePieMenu = new PieMenu(this);
 		this.editShapePieMenu = new PieMenu(this);
@@ -91,7 +91,7 @@ export class TangramGame {
 	 * 
 	 * @param {String} kind - the kind of piece to spawn (e.g. 'squareSM')
 	 */
-	spawnPiece(kind){
+	spawnPiece(kind) {
 
 		// create a new piece of said kind
 		const piece = new Piece(this, kind);
@@ -107,16 +107,79 @@ export class TangramGame {
 		this.pieces.value = [...this.pieces.value, piece];
 	}
 
-
 	/**
 	 * Removes a piece from the game board
 	 * 
-	 * @param {|String} pieceID - the piece id of the piece to remove
+	 * @param {String} pieceID - the piece id of the piece to remove
 	 */
-	removePiece(pieceID){
+	removePiece(pieceID) {
 
 		// filter out the piece by id
 		this.pieces.value = this.pieces.value.filter(piece => piece.id !== pieceID);
+	}
+
+
+	/**
+	 * Moves a piece back in the piece list
+	 * 
+	 * @param {Piece} piece - the piece to move
+	 */
+	movePieceBack(piece) {
+		const index = this.pieces.value.findIndex(p => p.id === piece.id);
+		if (index > 0) {
+			const newPieces = [...this.pieces.value];
+			[newPieces[index], newPieces[index - 1]] = [newPieces[index - 1], newPieces[index]];
+			this.sortFix(newPieces);
+		}
+	}
+
+
+	/**
+	 * Moves a piece forward in the piece list
+	 * 
+	 * @param {Piece} piece - the piece to move
+	 */
+	movePieceForward(piece) {
+		const index = this.pieces.value.findIndex(p => p.id === piece.id);
+		if (index !== -1 && index < this.pieces.value.length - 1) {
+			const newPieces = [...this.pieces.value];
+			[newPieces[index], newPieces[index + 1]] = [newPieces[index + 1], newPieces[index]];
+			this.sortFix(newPieces);
+		}
+	}
+
+
+	/**
+	 * Sends a piece to the back of the piece list
+	 * 
+	 * @param {Piece} piece - the piece to send to the back
+	 */
+	sendPieceToBack(piece) {
+		const newPieces = this.pieces.value.filter(p => p.id !== piece.id);
+		newPieces.unshift(piece);
+		this.sortFix(newPieces);
+	}
+
+
+	/**
+	 * Sends a piece to the front of the piece list
+	 * 
+	 * @param {Piece} piece - the piece to send to the front
+	 */	
+	sendPieceToFront(piece) {
+		const newPieces = this.pieces.value.filter(p => p.id !== piece.id);
+		newPieces.push(piece);
+		this.sortFix(newPieces);
+	}
+
+
+	/**
+	 * This is dumb and I need to fix this
+	 */
+	sortFix(newPieces){
+
+		this.pieces.value = [];
+		setTimeout(() => {this.pieces.value = newPieces;}, 0);
 	}
 
 
@@ -144,7 +207,7 @@ export class TangramGame {
 		// if we are already saving, just increment the counter
 		this.saveQueued = this.saveQueued || 0;
 		this.saveQueued++;
-		if(this.saveQueued>1)
+		if (this.saveQueued > 1)
 			return;
 
 		// save the project after a short delay to prevent spamming
@@ -166,7 +229,7 @@ export class TangramGame {
 	 * @returns {Object} - the game state as a JSON object
 	 */
 	serializeToJSON() {
-		
+
 		return {
 			boardX: this.boardX.value,
 			boardY: this.boardY.value,
@@ -181,9 +244,9 @@ export class TangramGame {
 	 * @param {Object} data - the game state as a JSON object
 	 */
 	deserializeFromJSON(data) {
-		
+
 		// if no pieces, clear board & gtfo
-		if (!data.pieces){
+		if (!data.pieces) {
 			this.pieces.value = [];
 			return;
 		}
@@ -210,5 +273,5 @@ export class TangramGame {
 			this.isLoading = false;
 		}, 0);
 	}
-	
+
 }
