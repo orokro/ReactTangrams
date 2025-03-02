@@ -52,12 +52,12 @@ const style = css`
 	
 	// hover & pressed (active) styles
 	&:hover {
-		.material-icons {
+		.material-icons, img {
 			top: -2px;
 		}
 	}
 	&:active {
-		.material-icons {
+		.material-icons, img {
 			top: 4px;
 		}
 	}
@@ -71,7 +71,7 @@ const style = css`
 	}
 
 	// make the icon bigger than the default google material font size
-	.material-icons {
+	.material-icons, img {
 
 		// animate position for hover and what not
 		position: relative;

@@ -45,6 +45,9 @@ export default class ModalManager {
 
 		// open or close the modal layer
 		this.isOpen = signal(false);
+
+		// save close fn here
+		this.currentModalCloseFn = null;
 	}
 
 
@@ -60,11 +63,20 @@ export default class ModalManager {
 
 
 	/**
-	 * Close the current modal
+	 * Close the current modal immediately
 	 */
 	closeModal(){
 		this.currentModal.value = null;
 		this.isOpen.value = false;
+	}
+
+
+	/**
+	 * Close the current modal with its own FN
+	 */
+	closeCurrentModal(){
+		if(this.currentModalCloseFn)
+			this.currentModalCloseFn();
 	}
 
 }

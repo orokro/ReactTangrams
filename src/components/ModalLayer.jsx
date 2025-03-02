@@ -12,6 +12,7 @@
 */
 
 // react imports
+import { useRef } from "react";
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 
@@ -21,14 +22,26 @@ import classNames from "classnames";
 // main component
 export const ModalLayer = ({ game, children }) => {
 
+	// ref to our modal el
+	const modalLayerRef = useRef(null);
+
+	const handleClick = (e) => {
+		// close modal only if the click was on the modal layer directly
+		if(e.target === modalLayerRef.current){
+			game.modalManager.closeCurrentModal();
+		}
+	};
+
 	// render
 	return (
 		<div 
+			ref={modalLayerRef}
 			css={style}
 			className={classNames(
 				'modal-layer', 
 				{ open: game.modalManager.currentModal.value !== null }
 			)}
+			onClick={handleClick}
 		>
 			<div className="modal-center-wrapper">
 				{children}

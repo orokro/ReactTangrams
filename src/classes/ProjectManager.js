@@ -50,6 +50,7 @@ export default class ProjectManager {
 		window.p = this;
     }
 
+
 	/**
 	 * Check the URL for a project to load
 	 */
@@ -226,14 +227,14 @@ export default class ProjectManager {
 	 * 
 	 * @param {Object|String} project - the project object or the project id
 	 */
-    deleteProject(project) {
+    async deleteProject(project) {
 
 		// get the project id & filter out the project
         const projectId = typeof project === 'string' ? project : project.id;
         this.projects.value = this.projects.value.filter(p => p.id !== projectId);
 
 		// save the projects and load the first project
-        this._saveProjectsToStorage();
+        await this._saveProjectsToStorage();
         if (this.projects.value.length > 0) {
             this.loadProject(this.projects.value[0]);
         } else {

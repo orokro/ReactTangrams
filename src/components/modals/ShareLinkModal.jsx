@@ -82,7 +82,7 @@ export const ShareLinkModal = ({ game, onClose }) => {
 				<ModalButtonBar
 					buttonsList={[
 						['Copy', 'copy'],
-						['Kthx', 'close', true],
+						['close', 'close', true],
 					]}
 					onButtonClicked={buttonClicked}
 				/>

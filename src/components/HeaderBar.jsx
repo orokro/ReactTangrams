@@ -71,6 +71,20 @@ export const HeaderBar = ({ game }) => {
 
 				</div>
 
+				{/* box with some icons stacked on the left of the header */}
+				<div className="header-icons-right" align="left">
+					<a href="https://github.com/orokro/ReactTangrams" target="_blank">
+						<HeaderBarIcon title="Project Github">
+							<img src="/ReactTangrams/github.svg" className="ghLogo" alt="GitHub logo" />
+						</HeaderBarIcon>
+					</a>
+					<a href="http://gmiller.net" target="_blank">
+						<HeaderBarIcon title="My Homepage">
+							<span className="material-icons">home</span>
+						</HeaderBarIcon>
+					</a>
+				</div>
+
 				{/* the main title area */}
 				<h1>
 					Greg's Tangrams in 
@@ -107,7 +121,8 @@ const style = css`
 		h1 {
 
 			position: absolute;
-			inset: -5px 0px 0px 330px;
+			inset: -5px 110px 0px 330px;
+			/* border: 1px solid red; */
 
 			// spacing & positioning
 			margin: 0px;
@@ -159,6 +174,25 @@ const style = css`
 			/* border: 1px solid red; */
 
 		}// .header-icons
+
+		// the icons that go on the right
+		.header-icons-right {
+			
+			// force on right
+			position: absolute;
+			inset: 0px 0px auto auto;
+
+			width: 110px;
+
+			// padding
+			padding: 5px 0px 0px 6px;
+		}
+
+		// the github logo
+		.ghLogo {
+			filter: invert(1);
+			transform: scale(1.2) translateY(-1px);
+		}
 
 	}// .header-bar
 `;

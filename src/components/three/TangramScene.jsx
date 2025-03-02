@@ -25,7 +25,7 @@ export const TangramScene = ({ game }) => {
 	}, [pieces]);
 
 	const { scene } = useThree();
-	const hdrPath = "/hdri/C.hdr";
+	const hdrPath = "/ReactTangrams/hdri/C.hdr";
 
 	// Load HDRI
 	useEffect(() => {

@@ -25,13 +25,6 @@ export const Modal = forwardRef(
 
 	// true while closing
 	const [open, setOpen] = useState(false);
-
-	// on mount, open the modal (trigger CSS animation)
-	useEffect(() => {
-		setTimeout(() => {			
-			setOpen(true);
-		}, 1);
-	}, []);
 	
 	// close the modal
 	const close = () => {
@@ -41,6 +34,16 @@ export const Modal = forwardRef(
 			setOpen(false);
 		}, 175);
 	}
+
+	// on mount, open the modal (trigger CSS animation)
+	useEffect(() => {
+		
+		game.modalManager.currentModalCloseFn = close;
+		setTimeout(() => {			
+			setOpen(true);
+		}, 1);
+		
+	}, []);	
 
 	// allow closing from parent
 	useImperativeHandle(ref, () => ({

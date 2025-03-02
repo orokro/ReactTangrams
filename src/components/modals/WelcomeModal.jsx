@@ -45,7 +45,7 @@ export const WelcomeModal = ({ game, onClose }) => {
 			game={game}
 			modalKey={ModalManager.MODALS.WELCOME}
 			showClose={true}
-			title="Welcome to Greg's React Tangram"
+			title="Welcome to Greg's React Tangrams"
 			onClose={handleClose}
 			style={{ width: '500px', maxHeight: '70%' }}
 		>
