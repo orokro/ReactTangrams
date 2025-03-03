@@ -127,6 +127,7 @@ const style = css`
 			// spacing & positioning
 			margin: 0px;
 			padding-top: 0px;
+			overflow: hidden;
 
 			// text settings
 			font-size: 32px;
